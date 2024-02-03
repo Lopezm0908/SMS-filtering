@@ -36,7 +36,7 @@ Now that everything is setup, I'll walk through how to use github for version co
 
 When you're ready to start working on the project, navigate to the project location in command line and type "git status". This will let you know if anyone else has done anything since you last worked on it. If it says you're up to date, you're good to start working. If you're not up to date, you'll need to type "git pull" to pull the changes from the cloud to your local machine, then you're good to start working.
 
-Once you're finished working, type "git status" again. This will let you know what files you've changed (they'll be red). Type "git add ." to add all files you've altered to the next commit. Type "git status" again to ensure that the files are green now, meaning they're ready for a commit. Then, type "git commit -m "describe here a very brief summary of what you did"". Once you've commited your changes, type "git push" to push your commits to the cloud.
+Once you're finished working, type "git status" again. This will let you know what files you've changed (they'll be red). Type "git add ." to add all files you've altered to the next commit. Type "git status" again to ensure that the files are green now, meaning they're ready for a commit. Then, type "git commit -m '(describe here a very brief summary of what you did)' ". Once you've commited your changes, type "git push" to push your commits to the cloud.
 
 That summarizes the overall workflow of github. Let me know if you have any questions (or you can use chatGPT for questions, it's very well documented on how to use Git and Github.
 
