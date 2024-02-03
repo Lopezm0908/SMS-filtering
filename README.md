@@ -11,7 +11,9 @@ For an easier time setting up a local repository, you can use Github Desktop, Gi
 Once you have Git installed, navigate to the folder you want to contain the project files in your command prompt. For windows, here's an example of how to do so:
 
 H:\>C:
+
 C:\>cd C:\Projects\Senior Project
+
 C:\Projects\Senior Project>
 
 Type the drive letter followed by a colon to swap which drive the command prompt is on.
