@@ -10,21 +10,11 @@ client = OpenAI(
   api_key=key
 )
 
-
-
-
-""" completion = client.completions.create(
-  model="davinci-002",
-  messages=[
-    {"role": "user", "content": "Where was the world series in 2020 played?"}
-  ]
-) """
-
-
 completion = client.chat.completions.create(
   model="gpt-3.5-turbo",
+  max_tokens=10,
   messages=[
-    {"role": "user", "content": "Is this text message potentially a scam message? Hey Dave, how's it going?"}
+    {"role": "user", "content": "Is this text message potentially a scam message (reply in either a yes or a no)? Hey Dave, how's it going?"}
   ]
 )
 
