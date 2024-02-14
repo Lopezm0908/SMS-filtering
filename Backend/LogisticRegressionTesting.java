@@ -1,14 +1,26 @@
 import java.io.IOException;
+import java.util.*;
 
 public class LogisticRegressionTesting {
 
 	public static void main(String[] args) throws IOException {
 		
-		LogisticRegression.Start();
+		
+		Scanner input = new Scanner(System.in);
+		String incomingMessage = "Alex just added to their Snapchat Story! Tap to see"
+				+ " what they're up to: https://snapchat.com/t/TtyfKo1EWysR";
+		System.out.print("Input message: ");
+		incomingMessage = input.nextLine();
+		
+		
+		
+		
+		//runs the training but i'm gonna comment that for now
+		//LogisticRegression.Start();
+		
+		
 		
 		//Use weight to predict new spam messages
-		String incomingMessage = "Alex just added to their Snapchat Story! Tap to see"
-				+ " what they're up to: https://snapchat.com/t/TtyfKd1EWysR";
 		
 		double[] array = new double[1];
 		
@@ -34,7 +46,7 @@ public class LogisticRegressionTesting {
 			System.out.println("ham");
 		}
 		
-		
+		input.close();
 	}
 
 }
