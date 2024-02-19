@@ -21,7 +21,7 @@ public class LogisticRegression {
 		//rows/instances
 		//rows in half is 2787
 		int rows = 5574;								
-		int iterations = 50;
+		int iterations = 90;
 		
 		//format: result	message
 		//separated by \t
@@ -138,16 +138,23 @@ public class LogisticRegression {
 	} //end of main
 	
 	
-	public static double analyzeMessage(String a) {
+	public static double analyzeMessage(String message) {
 		//making own features
-        //1. does it have a link?
-        //2. does it include a number?
-        //3. does it contain text, free, win, call, prize, cash, claim, or reward?
-		
+        //does it have a link?
+        //does it include a number?
+        //does it contain text, free, win, call, prize, cash, claim, etc?
+		//does click have a certain follow up word?
 		double SpamScore = 0;
-		String[] messageArray;
-		messageArray = a.split(" ");
 		
+		
+		
+		//original message was not changed by this point, dw i tested it
+		
+		
+		String[] messageArray;
+		
+		//looks at each word
+		messageArray = message.split(" ");
 		for(String each : messageArray) {
 			//does it have a link?
 			//score increases based on phishing chances from 
@@ -202,10 +209,31 @@ public class LogisticRegression {
 				each.equalsIgnoreCase("cash")  ||
 				each.equalsIgnoreCase("claim") ||
 				each.equalsIgnoreCase("reward")||
-				each.equalsIgnoreCase("refund")
+				each.equalsIgnoreCase("refund")||
+				each.equalsIgnoreCase("winner")||
+				each.equalsIgnoreCase("text")  ||
+				each.equalsIgnoreCase("txt")   ||
+				each.equalsIgnoreCase("congratulations")
 					) {
 				SpamScore = SpamScore + 1;
 			}
+			
+			//does click have a certain word after it?
+			if(each.equalsIgnoreCase("click")) {
+				SpamScore = SpamScore + 1;
+				
+				//makes a substring using the original message to see what's after click
+				String afterclick = message.substring(message.toLowerCase().indexOf("click") + 6).trim();
+				if(
+						afterclick.startsWith("here") == true ||
+						afterclick.startsWith("on")   == true ||
+						afterclick.startsWith("now")  == true ||
+						afterclick.startsWith("&")	  == true
+							) {
+					SpamScore = SpamScore + 3;
+				}
+			}
+			
 				
 		}
 		return SpamScore;
@@ -231,7 +259,7 @@ public class LogisticRegression {
 	//classify the prediction
 	public static int predictClassify(double predictedProb) {
 		
-		if(predictedProb >= 0.8) {
+		if(predictedProb >= 0.54780) {
 			return 1;
 		}
 		//normal
