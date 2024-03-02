@@ -23,12 +23,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="-250dp"
         android:ems="20"
         android:hint="Add Phone"
         android:inputType="phone"
-        android:textSize="20sp" />
+        android:phoneNumber="true"
+        android:textColorLink="@color/black"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/button"
