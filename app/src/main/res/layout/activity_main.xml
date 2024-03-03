@@ -14,7 +14,8 @@
         android:background="#008080"
         android:padding="5dp"
         android:text="activity1"
-        android:textColor="#FAFAFA" />
+        android:textColor="#FAFAFA"
+        />
 
     <Button
         android:id="@+id/BLbutton"
