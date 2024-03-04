@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextPhone"
         android:layout_centerHorizontal="true"
-        android:text="ADD" />
+        android:text="ADD"
+        android:textColorHighlight="#263271" />
 
     <ListView
         android:layout_width="match_parent"

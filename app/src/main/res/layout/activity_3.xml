@@ -25,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextTextMultiLine"
         android:layout_centerHorizontal="true"
-        android:text="ADD" />
+        android:text="ADD"
+        android:textColorLink="#425AE3" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
