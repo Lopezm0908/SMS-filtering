@@ -19,35 +19,77 @@ public class LogisticRegression {
 		
 		//for how many times the gradient descent will iterate
 		//rows/instances
-		//rows in half is 2787
-		int rows = 5574;								
-		int iterations = 90;
+		//5574 total
+		//4460 is 80%
+		//1114 is 20%
+		int totalrows = 5574;
+		int trainingrows = 4460;	
+		int testingrows = 1114;
+		int iterations = 200;	//was 75
 		
 		//format: result	message
 		//separated by \t
-		
 		BufferedReader buffer = new BufferedReader(new FileReader(filepath));
         String line = null;
         String[] resultmessagearray;
-        String[] result = new String[rows/2];
-        String[] message = new String[rows/2];
+        String[] trainingresult = new String[trainingrows/2];
+        String[] trainingmessage = new String[trainingrows/2];
         
-
+        
+        //mix (or scramble) before the split
+        //the document shouldn't be affected by this
+        resultmessagearray = new String[totalrows];
+        int index = 0;
+        while((line = buffer.readLine()) != null) {
+        	resultmessagearray[index] = line;
+        	index = index + 1;
+        }
+        
+        resultmessagearray = Mixer.mixing(resultmessagearray);
+        
+        
+        
         //even is the result/classification
         //odd  is the message
         //separate elements into respective arrays
         int counter = 0;
-        for(int i = 0; i < rows; i++) {
-        	line = buffer.readLine();
-            resultmessagearray = line.split("\t");
+        for(int i = 0; i < trainingrows; i++) {
+        	String[] parts = resultmessagearray[i].split("\t");
         	
-        	result[counter] = resultmessagearray[0];
-        	message[counter] = resultmessagearray[1];
-        	if(counter < rows/2 - 1) {
+        	trainingresult[counter] = parts[0];
+        	trainingmessage[counter] = parts[1];
+        	if(counter < trainingrows/2 - 1) {
             	counter = counter + 1;
         	}
         }
         
+        
+        
+        //preparing the testing data
+        //put testing samples into different array
+        //last 1114 of the resultmessagearray, which is 5574 total
+        String[] testing = new String[testingrows];
+        String[] testingresult = new String[testingrows/2];
+        String[] testingmessage = new String[testingrows/2];
+        
+        //putting resultmessagearray into testing array
+        int testingIndex = 0;
+        for(int i = 4460; i < 5574; i++) {
+        	testing[testingIndex] = resultmessagearray[i];
+        	testingIndex = testingIndex + 1;
+        }
+        
+        //separate testing array into testing result and message
+        counter = 0;
+        for(int i = 0; i < testing.length; i++) {
+        	String[] parts = testing[i].split("\t");
+        	
+        	testingresult[counter] = parts[0];
+        	testingmessage[counter] = parts[1];
+        	if(counter < testingrows/2 - 1) {
+            	counter = counter + 1;
+        	}
+        }
         
         buffer.close();
 		
@@ -61,34 +103,32 @@ public class LogisticRegression {
 		
 		//starting at 0
 		int current = 0;
-		String currentMessage = message[current];
+		String currentMessage = trainingmessage[current];
 		double SpamScore = 0;
 		
 		
 		//start gradient descent
 		for(int i = 0; i < iterations; i++) {
 			System.out.println("iteration: " + (i+1));
-			double[] predicted = new double[rows];
-			double[] error = new double[rows];
+			double[] predicted = new double[trainingrows];
+			double[] error = new double[trainingrows];
 			double[] updowndelta = new double[numFeats];
 			misclassified = 0;
 			
 			
 			
 			//start logistic regression
-			for(int j = 0; j < rows/2 - 1; j++) {
+			for(int j = 0; j < trainingrows/2 - 1; j++) {
 				//analyze the message from file and put that into the features array
 				//put result (0 for ham, 1 for spam) into target
 				SpamScore = analyzeMessage(currentMessage);
 				features[0] = SpamScore;
-				if(result[current].equalsIgnoreCase("ham") == true) {
+				if(trainingresult[current].equalsIgnoreCase("ham") == true) {
 					target = 0;
 				}
 				else {
 					target = 1;
 				}
-				
-				
 				
 				//calculate predicted
 				double dotproduct = dotProduct(features, weights);
@@ -114,12 +154,12 @@ public class LogisticRegression {
 				
 				//get next message
 				current = current + 1;
-				currentMessage = message[current];
+				currentMessage = trainingmessage[current];
 			} //end of logistic regression
 			
 			//reset and go back to first message
 			current = 0;
-			currentMessage = message[current];
+			currentMessage = trainingmessage[current];
 			SpamScore = 0;
 			
 			//updating the weights
@@ -128,11 +168,15 @@ public class LogisticRegression {
 			}
 			
 		}
-		double accuracy = (1 - ((double) misclassified) / ((double) rows)) * 100;
+		double accuracy = (1 - ((double) misclassified) / ((double) trainingrows)) * 100;
 		
-		System.out.println("\nAccuracy is: " + accuracy + "%");
-		System.out.println("weights: " + weights[0]);
+		System.out.println("\nAccuracy with training set: " + accuracy + "%");
+		System.out.println("weight: " + weights[0]);
 		weight = weights[0];
+		
+		
+		System.out.println("\nPost-Training Testing Starts: ");
+		PostTrainingTest(testingresult, testingmessage, weights);
 		
 		
 	} //end of main
@@ -145,7 +189,6 @@ public class LogisticRegression {
         //does it contain text, free, win, call, prize, cash, claim, etc?
 		//does click have a certain follow up word?
 		double SpamScore = 0;
-		
 		
 		
 		//original message was not changed by this point, dw i tested it
@@ -236,6 +279,7 @@ public class LogisticRegression {
 			
 				
 		}
+		SpamScore = Math.sqrt(SpamScore) * Math.PI;
 		return SpamScore;
 	}
 	
@@ -256,6 +300,7 @@ public class LogisticRegression {
 	    return answer;
 	}
 	
+	
 	//classify the prediction
 	public static int predictClassify(double predictedProb) {
 		
@@ -266,6 +311,49 @@ public class LogisticRegression {
 		else {
 			return 0;
 		}
+	}
+	
+	//testing the last 1140
+	public static void PostTrainingTest(String[] result, String[] message, double[] weight) {
+		double temp;
+		double[] temp2 = new double[1];
+		String temp3;
+		int classification;
+		int misclassified = 0;
+		for(int i = 0; i < result.length; i++) {
+			temp = analyzeMessage(message[i]);
+			temp2[0] = temp;
+			classification = tested(temp2, weight);
+			
+			if(classification == 1) {
+				temp3 = "spam";
+			}
+			else {
+				temp3 = "ham";
+			}
+			
+			if(!temp3.equalsIgnoreCase(result[i])) {
+				misclassified = misclassified + 1;
+			}
+		}
+		
+		double accuracy = (1.0 - ((double) misclassified) / (1114.0)) * 100;
+		System.out.println("Misclassified: " + misclassified);
+		System.out.println("Accuracy: " + (accuracy));
+	}
+	
+	//combine dotproduct and sigmoid and classify
+	//spamscore, weight
+	public static int tested(double[] a, double[] b) {
+		//takes two double arrays
+		double dotproduct = dotProduct(a, b);
+		
+		//takes a double
+		double sigmoid = sigmoid(dotproduct);
+		
+		//takes a double
+		int classification = predictClassify(sigmoid);
+		return classification;
 	}
 	
 }
