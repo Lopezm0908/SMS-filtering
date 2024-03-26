@@ -6,6 +6,6 @@ import android.os.Bundle
 class Activity4 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_4)
+        setContentView(R.layout.whitelist)
     }
 }
