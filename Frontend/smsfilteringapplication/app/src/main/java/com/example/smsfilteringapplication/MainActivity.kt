@@ -10,19 +10,49 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Telephony
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
 
+
 class MainActivity : AppCompatActivity() {
     lateinit var receiver: SmsReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
+        //define and register receiver
         receiver = SmsReceiver()
         registerReceiver(receiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //checks if permissions already exist if they do not it asks for them if they do then it runs the recievemsg service to listen for msg
+        //button handling
+        val BLbutton = findViewById<Button>(R.id.BLbutton)
+        BLbutton.setOnClickListener {
+            val intent = Intent(this, Blacklist::class.java)
+            startActivity(intent)
+        }
+
+        val  MSbutton = findViewById<Button>(R.id.MSbutton)
+        MSbutton.setOnClickListener {
+            val intent = Intent(this, Messagereporting::class.java)
+            startActivity(intent)
+        }
+
+        val  WLbutton = findViewById<Button>(R.id.WLbutton)
+        WLbutton.setOnClickListener {
+            val intent = Intent(this, Whitelist::class.java)
+            startActivity(intent)
+        }
+
+        val  KWbutton = findViewById<Button>(R.id.KWbutton)
+        KWbutton.setOnClickListener {
+            val intent = Intent(this, KeywordManager::class.java)
+            startActivity(intent)
+        }
+
+
+        //checks if permissions already exist if they do not it asks for them
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS),111)
         }
@@ -49,27 +79,6 @@ class MainActivity : AppCompatActivity() {
                                     Toast.LENGTH_LONG
                                 ).show()
     }
-    // waits for message and if message receive it displays body in toast msg
-   // private fun receiveMsg() {
-  //      var br = object: BroadcastReceiver(){
-    //        override fun onReceive(p0: Context?, p1: Intent?) {
-    //            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT && Telephony.Sms.ADDRESS != "4099445824"){
-      //              for(sms in Telephony.Sms.Intents.getMessagesFromIntent(p1)) {
-      //                  Toast.makeText(
-       //                     applicationContext,
-        //                    sms.displayMessageBody,
-        //                    Toast.LENGTH_LONG
-        //                ).show()
-
-     //               }
-     //           }
-
-       //     }
-
-        }
-        //registration for broadcast receiver.
-
-
 
 
     fun deleteSMS(context: Context, message: String, number: String) {
@@ -102,3 +111,22 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+// ignore this
+// private fun receiveMsg() {
+//      var br = object: BroadcastReceiver(){
+//        override fun onReceive(p0: Context?, p1: Intent?) {
+//            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT && Telephony.Sms.ADDRESS != "4099445824"){
+//              for(sms in Telephony.Sms.Intents.getMessagesFromIntent(p1)) {
+//                  Toast.makeText(
+//                     applicationContext,
+//                    sms.displayMessageBody,
+//                    Toast.LENGTH_LONG
+//                ).show()
+
+//               }
+//           }
+
+//     }
+
+}
+//registration for broadcast receiver.
