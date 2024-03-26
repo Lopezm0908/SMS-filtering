@@ -29,8 +29,7 @@ class SmsReceiver : BroadcastReceiver() {
                             "testing a thing message blocked",
                             Toast.LENGTH_LONG
                         ).show()
-                        Log.d(TAG, "Blocked message from $sender: $messageBody")
-                        // Abort broadcast to prevent the message from reaching the inbox
+                        // Abort broadcast wont work but is a placeholder for now
                         abortBroadcast()
                     } else {
                         // Log the message
@@ -39,7 +38,6 @@ class SmsReceiver : BroadcastReceiver() {
                             "testing a thing",
                             Toast.LENGTH_LONG
                         ).show()
-                        Log.d(TAG, "Received message from $sender: $messageBody")
                         abortBroadcast()
                     }
                 }
