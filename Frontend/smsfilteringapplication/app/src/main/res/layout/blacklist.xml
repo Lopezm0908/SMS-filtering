@@ -3,47 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Blacklist">
+    android:layout_height="match_parent">
+    <!--tools:context=".screens.Blacklist"-->
 
-    <TextView
-        android:id="@+id/textView"
+    <SearchView
+        android:id="@+id/blsearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Black List Entry "
-        android:textAlignment="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="280dp"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        />
-
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-250dp"
-        android:ems="10"
-        android:hint="Add Phone"
-        android:inputType="phone" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPhone"
-        android:layout_centerHorizontal="true"
-        android:text="ADD"
-        android:textColorHighlight="#3F51B5"
-        android:textColorLink="#2F3F98" />
+        android:queryHint="Search Item"
+        android:layout_margin="16dp"
+        android:iconifiedByDefault="false"/>
 
     <ListView
+        android:id="@+id/bllistView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/button"
-        android:layout_margin="20dp" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blsearchView"
+        android:layout_marginTop="16dp"
+        android:dividerHeight="1dp"
+        android:divider="@android:color/darker_gray"
+        android:layout_above="@+id/bladdItemButton"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/bladdItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Item"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"/>
 
 </RelativeLayout>

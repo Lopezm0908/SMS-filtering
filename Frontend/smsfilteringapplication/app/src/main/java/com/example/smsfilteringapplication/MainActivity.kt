@@ -1,20 +1,21 @@
 package com.example.smsfilteringapplication
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Telephony
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-
+import com.example.smsfilteringapplication.screens.Blacklist
+import com.example.smsfilteringapplication.screens.KeywordManager
+import com.example.smsfilteringapplication.screens.Messagereporting
+import com.example.smsfilteringapplication.screens.Whitelist
+import com.example.smsfilteringapplication.services.SmsReceiver
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         BLbutton.setOnClickListener {
             val intent = Intent(this, Blacklist::class.java)
             startActivity(intent)
+            finish()
         }
 
         val  MSbutton = findViewById<Button>(R.id.MSbutton)
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val  WLbutton = findViewById<Button>(R.id.WLbutton)
         WLbutton.setOnClickListener {
-            val intent = Intent(this, Whitelist::class.java)
+            val intent = Intent(this, Whitelist::class.java )
             startActivity(intent)
         }
 
