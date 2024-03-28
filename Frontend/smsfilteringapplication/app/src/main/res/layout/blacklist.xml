@@ -22,16 +22,6 @@
         android:text="main menu" />
 
     <Button
-        android:id="@+id/removeitembtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="27dp"
-        android:layout_toStartOf="@+id/additembtn"
-        android:layout_toEndOf="@+id/mainmenubtn"
-        android:text="remove number" />
-
-    <Button
         android:id="@+id/additembtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

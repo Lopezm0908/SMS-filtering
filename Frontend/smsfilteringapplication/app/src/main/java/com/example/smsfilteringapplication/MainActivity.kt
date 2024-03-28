@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(setSmsAppIntent)
 
         //checks if permissions already exist if they do not it asks for them
-        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_MMS,android.Manifest.permission.RECEIVE_WAP_PUSH,android.Manifest.permission.READ_SMS,android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.SEND_SMS),111)
+        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_MMS, android.Manifest.permission.WRITE_CONTACTS,android.Manifest.permission.RECEIVE_WAP_PUSH,android.Manifest.permission.READ_SMS,android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.SEND_SMS),111)
         }
         else
             Toast.makeText(

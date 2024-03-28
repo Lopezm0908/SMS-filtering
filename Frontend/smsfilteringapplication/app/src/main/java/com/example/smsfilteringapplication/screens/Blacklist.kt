@@ -1,8 +1,11 @@
 package com.example.smsfilteringapplication.screens
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -24,6 +27,11 @@ import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.provider.BlockedNumberContract
 import android.database.Cursor
+import android.widget.AdapterView
+import androidx.core.content.ContextCompat
+
+
+
 public class Blacklist : AppCompatActivity() {
 
     val numberlist = arrayListOf<String>("thing one")
@@ -35,12 +43,108 @@ public class Blacklist : AppCompatActivity() {
 
         val mainmenubutton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+           // val intent = Intent(this, MainActivity::class.java)
+            //startActivity(intent)
+
+
+            listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+
+        }
+        val addItemButton = findViewById<Button>(R.id.additembtn)
+        addItemButton.setOnClickListener {
+
+            //add item dialogue
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Add Item")
+
+            val inflater = LayoutInflater.from(this)
+            val dialogLayout = inflater.inflate(R.layout.dialogue_add_item, null)
+
+            val editText: EditText = dialogLayout.findViewById(R.id.editTextItem)
+            builder.setView(dialogLayout)
+
+            builder.setPositiveButton("Add") { _, _ ->
+                val newItem = editText.text.toString().trim()
+                if (newItem.isNotEmpty()) {
+                    //if conditions are met the item is added to the back end blacklist and the list view is updated
+                    addNumberToBlockedList(newItem)
+                    listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+                } else {
+                    Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
+                }
+            }
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+            builder.show()
+            //
+            listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+        }
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            // Here 'view' is the clicked item from the ListView
+            // Assuming the default layout where the TextView is the only element
+            //val textView = view as TextView
+
+            // Reading the text content of the clicked TextView
+            val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
+
+            // Set the message and title for the dialog
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Confirm Action")
+            builder.setMessage("Do you want to complete this action?")
+
+            // Add a Confirm button and its logic
+            builder.setPositiveButton("Confirm") { dialog, which ->
+                // Perform actions after confirmation here
+
+                removeBlockedNumber(this,textContent)
+                listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+            }
+
+            // Add a Cancel button and its logic
+            builder.setNegativeButton("Cancel") { dialog, which ->
+
+            }
+
+            // set the dialog to not close when the user touches outside of it
+            builder.setCancelable(false)
+
+            // Create and show the AlertDialog
+            val dialog = builder.create()
+            dialog.show()
+
+
+
         }
 
     }
+    fun addNumberToBlockedList(number: String) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            val values = ContentValues()
+            values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
+            contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
+        } else {
+            // Handle the lack of permission here.
+        }
+    }
 
+    fun removeBlockedNumber(context: Context, phoneNumber: String): Boolean {
+        val contentResolver: ContentResolver = context.contentResolver
+
+        // Build the selection clause to find the blocked number
+        val selection = "${BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?"
+        val selectionArgs = arrayOf(phoneNumber)
+
+        // Attempt to delete the number from the blocked list
+        val rowsDeleted = contentResolver.delete(
+            BlockedNumberContract.BlockedNumbers.CONTENT_URI,
+            selection,
+            selectionArgs
+        )
+
+        // If rowsDeleted is more than 0, the operation was successful
+        return rowsDeleted > 0
+    }
     fun getBlockedNumbers(context: Context): ArrayList<String> {
         val blockedNumbersList = ArrayList<String>()
 
