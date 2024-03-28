@@ -3,35 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!--tools:context=".screens.Blacklist"-->
-
-    <SearchView
-        android:id="@+id/blsearchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="Search Item"
-        android:layout_margin="16dp"
-        android:iconifiedByDefault="false"/>
+    android:layout_height="match_parent"
+    tools:context=".screens.Blacklist">
 
     <ListView
-        android:id="@+id/bllistView"
+        android:id="@+id/blacklist_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/blsearchView"
-        android:layout_marginTop="16dp"
-        android:dividerHeight="1dp"
-        android:divider="@android:color/darker_gray"
-        android:layout_above="@+id/bladdItemButton"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/blacklist_listview"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="60dp"></ListView>
 
     <Button
-        android:id="@+id/bladdItemButton"
+        android:id="@+id/mainmenubtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Item"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"/>
+
+        android:text="main menu" />
+
+    <Button
+        android:id="@+id/removeitembtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="27dp"
+        android:layout_toStartOf="@+id/additembtn"
+        android:layout_toEndOf="@+id/mainmenubtn"
+        android:text="remove number" />
+
+    <Button
+        android:id="@+id/additembtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="-152dp"
+        android:text="add number" />
 
 </RelativeLayout>

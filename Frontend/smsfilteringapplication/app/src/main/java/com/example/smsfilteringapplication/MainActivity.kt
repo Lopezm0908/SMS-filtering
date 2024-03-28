@@ -1,16 +1,22 @@
 package com.example.smsfilteringapplication
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Telephony
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.smsfilteringapplication.screens.Blacklist
 import com.example.smsfilteringapplication.screens.KeywordManager
 import com.example.smsfilteringapplication.screens.Messagereporting
@@ -24,57 +30,56 @@ class MainActivity : AppCompatActivity() {
         //define and register receiver
         receiver = SmsReceiver()
         registerReceiver(receiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //button handling
-        val BLbutton = findViewById<Button>(R.id.BLbutton)
-        BLbutton.setOnClickListener {
-            val intent = Intent(this, Blacklist::class.java)
-            startActivity(intent)
-            finish()
-        }
 
-        val  MSbutton = findViewById<Button>(R.id.MSbutton)
-        MSbutton.setOnClickListener {
-            val intent = Intent(this, Messagereporting::class.java)
-            startActivity(intent)
-        }
-
-        val  WLbutton = findViewById<Button>(R.id.WLbutton)
-        WLbutton.setOnClickListener {
-            val intent = Intent(this, Whitelist::class.java )
-            startActivity(intent)
-        }
-
-        val  KWbutton = findViewById<Button>(R.id.KWbutton)
-        KWbutton.setOnClickListener {
-            val intent = Intent(this, KeywordManager::class.java)
-            startActivity(intent)
-        }
-
+        //ask to make default sms application. popup doesnt appear for some reason if someone has a way to fix that would be cool.
+        val setSmsAppIntent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+        setSmsAppIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+        startActivity(setSmsAppIntent)
 
         //checks if permissions already exist if they do not it asks for them
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS),111)
+            ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_MMS,android.Manifest.permission.RECEIVE_WAP_PUSH,android.Manifest.permission.READ_SMS,android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.SEND_SMS),111)
         }
         else
-         //   receiveMsg()
             Toast.makeText(
                 applicationContext,
                 "permissions granted",
                 Toast.LENGTH_LONG
             ).show()
+
+        //button navigation to other pages.
+        val BLbutton = findViewById<Button>(R.id.BLbutton)
+        BLbutton.setOnClickListener {
+            val intent = Intent(this, Blacklist::class.java)
+            startActivity(intent)
+        }
+        val  MSbutton = findViewById<Button>(R.id.MSbutton)
+        MSbutton.setOnClickListener {
+            val intent = Intent(this, Messagereporting::class.java)
+            startActivity(intent)
+        }
+        val  WLbutton = findViewById<Button>(R.id.WLbutton)
+        WLbutton.setOnClickListener {
+            val intent = Intent(this, Whitelist::class.java )
+            startActivity(intent)
+        }
+        val  KWbutton = findViewById<Button>(R.id.KWbutton)
+        KWbutton.setOnClickListener {
+            val intent = Intent(this, KeywordManager::class.java)
+            startActivity(intent)
+        }
     }
-    // runs after permissions request goes through.
+    // runs after permissions request goes through to check if permissions were granted or not.
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == 111 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-          //  receiveMsg()
+
             Toast.makeText(
                                     applicationContext,
                                    "permissions granted",
@@ -83,6 +88,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+    //more testing functions
     fun deleteSMS(context: Context, message: String, number: String) {
         try {
           Log.d("sms blocker", "Deleting SMS from inbox")
@@ -110,8 +117,45 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
            Log.d("sms blocker","Could not delete SMS from inbox: " + e.message)
         }
-
     }
+        fun checkAndRequestDefaultSmsApp(activity: Activity) {
+            if (Telephony.Sms.getDefaultSmsPackage(activity) != activity.packageName) {
+                // Not default SMS app
+                val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+                intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, activity.packageName)
+                activity.startActivityForResult(intent, 111)
+            } else {
+                // Already default SMS app, proceed to check runtime permission
+                checkAndRequestRuntimePermission(activity)
+            }
+        }
+        fun checkAndRequestRuntimePermission(activity: Activity) {
+            if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(android.Manifest.permission.READ_SMS),
+                    111
+                )
+            } else {
+                // Permission already granted, proceed with reading SMS or blocked numbers
+            }
+        }
+
+        // Handle the permission result
+      //  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+     //       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+     //       if (requestCode == 111) {
+     //           if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, proceed with the action
+     //           } else {
+                    // Permission denied, handle the error
+      //          }
+    //        }
+  //      }
+        }
+
 
 // ignore this
 // private fun receiveMsg() {
@@ -129,6 +173,3 @@ class MainActivity : AppCompatActivity() {
 //           }
 
 //     }
-
-}
-//registration for broadcast receiver.
