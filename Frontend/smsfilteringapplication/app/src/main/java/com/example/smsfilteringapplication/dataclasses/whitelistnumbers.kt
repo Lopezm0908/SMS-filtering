@@ -1,5 +1,5 @@
 package com.example.smsfilteringapplication.dataclasses
 
-data class blacklistnumbers(val name : String)  {
+data class whitelistnumbers(val name : String)  {
 
 }
