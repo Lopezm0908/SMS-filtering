@@ -43,12 +43,8 @@ public class Blacklist : AppCompatActivity() {
 
         val mainmenubutton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
-           // val intent = Intent(this, MainActivity::class.java)
-            //startActivity(intent)
-
-
-            listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
-
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
         val addItemButton = findViewById<Button>(R.id.additembtn)
         addItemButton.setOnClickListener {
@@ -81,9 +77,6 @@ public class Blacklist : AppCompatActivity() {
             listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
         }
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            // Here 'view' is the clicked item from the ListView
-            // Assuming the default layout where the TextView is the only element
-            //val textView = view as TextView
 
             // Reading the text content of the clicked TextView
             val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
