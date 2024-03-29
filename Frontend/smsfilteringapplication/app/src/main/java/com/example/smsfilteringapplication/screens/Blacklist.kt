@@ -33,6 +33,8 @@ import androidx.core.content.ContextCompat
 
 
 public class Blacklist : AppCompatActivity() {
+
+    val numberlist = arrayListOf<String>("thing one")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.blacklist)
