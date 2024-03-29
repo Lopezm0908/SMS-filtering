@@ -9,14 +9,20 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
 
 public class Whitelist : AppCompatActivity() {
-    val numberlist = arrayListOf<String>("thing one")
+    //val numberlist = arrayListOf<String>("thing one")
+
+    private val viewModel: WhitelistViewModel by viewModels()
+
+    //CAMERON NOTE: PICK UP FROM HERE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
