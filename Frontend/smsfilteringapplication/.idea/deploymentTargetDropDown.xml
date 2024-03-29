@@ -2,6 +2,15 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="Blacklist">
+        <State />
+      </entry>
+      <entry key="Blacklist (1)">
+        <State />
+      </entry>
+      <entry key="Messagereporting">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
