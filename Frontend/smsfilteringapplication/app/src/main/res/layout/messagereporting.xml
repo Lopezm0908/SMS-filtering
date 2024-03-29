@@ -6,36 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".screens.Messagereporting">
 
-    <TextView
-        android:id="@+id/textView"
+    <ListView
+        android:id="@+id/message_reporting_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Messages"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/message_reporting_listview"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="60dp"></ListView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/message_reporting_mainmenubtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextTextMultiLine"
-        android:layout_centerHorizontal="true"
-        android:text="ADD"
-        android:textColorLink="#425AE3" />
 
-    <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:text="main menu" />
+
+    <Button
+        android:id="@+id/message_reporting_additembtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine" />
+
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="-152dp"
+        android:text="refresh messages" />
+
 
 </RelativeLayout>

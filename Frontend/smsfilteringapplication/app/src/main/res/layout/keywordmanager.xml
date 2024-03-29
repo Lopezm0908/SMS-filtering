@@ -6,46 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".screens.KeywordManager">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Keyword/Phrase Entry "
-        android:textAlignment="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="280dp"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        />
-
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-250dp"
-        android:ems="10"
-        android:hint="keyword"
-        android:inputType="phone" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPhone"
-        android:layout_centerHorizontal="true"
-        android:text="ADD"
-        android:textColorHighlight="#263271" />
-
     <ListView
+        android:id="@+id/keyword_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/button"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignBottom="@id/keyword_listview"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="60dp"></ListView>
+
+    <Button
+        android:id="@+id/keyword_mainmenubtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="main menu" />
+
+    <Button
+        android:id="@+id/keyword_additembtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="-152dp"
+        android:text="Add Keyword" />
 
 </RelativeLayout>
