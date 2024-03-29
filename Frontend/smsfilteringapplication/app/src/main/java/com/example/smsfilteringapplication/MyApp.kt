@@ -3,7 +3,6 @@ package com.example.smsfilteringapplication
 
 import android.app.Application
 import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
-import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
