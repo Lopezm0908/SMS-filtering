@@ -21,7 +21,7 @@ import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
 
 public class Whitelist : AppCompatActivity() {
     private val viewModel: WhitelistViewModel by viewModels()
-    //val numberlist = arrayListOf<String>("thing one")
+    //val arrayListOfNumbers = arrayListOf<String>("thing one")
     //val numberlist = viewModel.whitelistedNumbers.collectAsState().value.map { it.number }
 
 
@@ -32,8 +32,8 @@ public class Whitelist : AppCompatActivity() {
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        //val numberList = viewModel.whitelistedNumbers.collectAsState().value
-        val numberList = viewModel.whitelistedNumbers.value.map{it.number}
+        //val numberList = viewModel.whitelistedNumbers.value.map{it.number} //this line is causing the crash
+        val numberList = viewModel.whitelistedNumbers.value
         val arrayListOfNumbers = ArrayList(numberList)
         listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
 
