@@ -1,6 +1,8 @@
 package com.example.smsfilteringapplication.screens
 
 import android.content.Intent
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.AdapterView
@@ -14,15 +16,27 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
+import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
+import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.viewmodels.MyApp
 import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
+import io.realm.kotlin.ext.query
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
-    private val viewModel: WhitelistViewModel by viewModels()
-    //val arrayListOfNumbers = arrayListOf<String>("thing one")
-    //val numberlist = viewModel.whitelistedNumbers.collectAsState().value.map { it.number }
+    //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
+    private val realm = MyApp.realm
+    val arrayListOfNumbers = arrayListOf<String>()
+
+
 
 
 
@@ -30,12 +44,30 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
 
+        val whiteListedNumbers = realm
+            .query<WhiteListNumbers>()
+            .asFlow()
+            .map { results ->
+                results.list.toList()
+            }
+            .stateIn(
+                lifecycleScope,
+                SharingStarted.WhileSubscribed(),
+                emptyList()
+            )
+
+        //convert whiteListedNumbers to an ArrayList here
+        lifecycleScope.launch {
+            val whiteListedNumbersList = whiteListedNumbers.firstOrNull() ?: emptyList()
+            val arrayListOfNumbers = ArrayList(whiteListedNumbersList)
+
+            // Now you can use `arrayListOfNumbers` wherever you need an ArrayList
+            val listView = findViewById<ListView>(R.id.whitelist_listview)
+            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+        }
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        //val numberList = viewModel.whitelistedNumbers.value.map{it.number} //this line is causing the crash
-        val numberList = viewModel.whitelistedNumbers.value
-        val arrayListOfNumbers = ArrayList(numberList)
-        listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
+        listView.adapter= blacklistAdapter(this, whiteListedNumbers)
 
         val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
