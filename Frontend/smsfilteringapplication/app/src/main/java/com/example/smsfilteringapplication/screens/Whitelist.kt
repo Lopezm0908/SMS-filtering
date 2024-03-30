@@ -9,25 +9,33 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
 
 public class Whitelist : AppCompatActivity() {
-    //val numberlist = arrayListOf<String>("thing one")
-
     private val viewModel: WhitelistViewModel by viewModels()
+    //val numberlist = arrayListOf<String>("thing one")
+    //val numberlist = viewModel.whitelistedNumbers.collectAsState().value.map { it.number }
 
-    //CAMERON NOTE: PICK UP FROM HERE
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
+
+
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        listView.adapter= blacklistAdapter(this,numberlist)
+        //val numberList = viewModel.whitelistedNumbers.collectAsState().value
+        val numberList = viewModel.whitelistedNumbers.value.map{it.number}
+        val arrayListOfNumbers = ArrayList(numberList)
+        listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
 
         val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
@@ -51,8 +59,8 @@ public class Whitelist : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    numberlist.add(newItem)
-                    listView.adapter= blacklistAdapter(this,numberlist)
+                    arrayListOfNumbers.add(newItem)
+                    listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -76,8 +84,8 @@ public class Whitelist : AppCompatActivity() {
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
 
-                numberlist.removeAt(position)
-                listView.adapter= blacklistAdapter(this,numberlist)
+                arrayListOfNumbers.removeAt(position)
+                listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
             }
 
             // Add a Cancel button and its logic

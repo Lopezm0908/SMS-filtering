@@ -41,9 +41,17 @@ class WhitelistViewModel : ViewModel(){
         viewModelScope.launch {
             realm.write {
                 val whiteList1 = WhiteListNumbers().apply {
-                    number = "Test Number!"
+                    number = "Test Number 1!"
+                }
+                val whiteList2 = WhiteListNumbers().apply {
+                    number = "Test Number 2!"
+                }
+                val whiteList3 = WhiteListNumbers().apply {
+                    number = "Test Number 3!"
                 }
                 copyToRealm(whiteList1, updatePolicy = UpdatePolicy.ALL) //updatePolicy = When something already exists, it is UPDATED
+                copyToRealm(whiteList2, updatePolicy = UpdatePolicy.ALL)
+                copyToRealm(whiteList3, updatePolicy = UpdatePolicy.ALL)
             }
         }
     }
