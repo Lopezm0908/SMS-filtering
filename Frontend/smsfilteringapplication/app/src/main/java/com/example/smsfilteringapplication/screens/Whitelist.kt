@@ -44,27 +44,8 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
 
-        val whiteListedNumbers = realm
-            .query<WhiteListNumbers>()
-            .asFlow()
-            .map { results ->
-                results.list.toList()
-            }
-            .stateIn(
-                lifecycleScope,
-                SharingStarted.WhileSubscribed(),
-                emptyList()
-            )
+        val whiteListedNumbers = realm.query<WhiteListNumbers>()
 
-        //convert whiteListedNumbers to an ArrayList here
-        lifecycleScope.launch {
-            val whiteListedNumbersList = whiteListedNumbers.firstOrNull() ?: emptyList()
-            val arrayListOfNumbers = ArrayList(whiteListedNumbersList)
-
-            // Now you can use `arrayListOfNumbers` wherever you need an ArrayList
-            val listView = findViewById<ListView>(R.id.whitelist_listview)
-            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
-        }
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
         listView.adapter= blacklistAdapter(this, whiteListedNumbers)
