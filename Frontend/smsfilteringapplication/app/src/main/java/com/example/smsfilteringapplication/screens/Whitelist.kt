@@ -63,7 +63,10 @@ public class Whitelist : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    arrayListOfNumbers.add(newItem)
+                    //arrayListOfNumbers.add(newItem)
+                    realm.write{
+
+                    }
                     listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
@@ -108,4 +111,10 @@ public class Whitelist : AppCompatActivity() {
 
         }
     }
+
+//    private fun addNumber (newNumber : String){
+//        realm.write{
+//
+//        }
+//    }
 }
