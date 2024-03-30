@@ -1,4 +1,4 @@
-package com.example.smsfilteringapplication.viewmodels
+package com.example.smsfilteringapplication
 
 
 import android.app.Application

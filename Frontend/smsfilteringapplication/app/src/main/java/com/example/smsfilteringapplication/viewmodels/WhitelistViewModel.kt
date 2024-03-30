@@ -2,6 +2,7 @@ package com.example.smsfilteringapplication.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smsfilteringapplication.MyApp
 import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import io.realm.kotlin.UpdatePolicy
 import kotlinx.coroutines.flow.SharingStarted

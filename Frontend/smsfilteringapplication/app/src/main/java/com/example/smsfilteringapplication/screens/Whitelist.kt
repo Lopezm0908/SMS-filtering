@@ -1,8 +1,6 @@
 package com.example.smsfilteringapplication.screens
 
 import android.content.Intent
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.AdapterView
@@ -11,25 +9,14 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
 import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.example.smsfilteringapplication.viewmodels.MyApp
-import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
+import com.example.smsfilteringapplication.MyApp
 import io.realm.kotlin.ext.query
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
     //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
@@ -44,11 +31,15 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
 
-        val whiteListedNumbers = realm.query<WhiteListNumbers>()
+        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
+
+        for(i in whiteListedNumbers){
+            arrayListOfNumbers.add(i.number)
+        }
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        listView.adapter= blacklistAdapter(this, whiteListedNumbers)
+        listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
 
         val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
