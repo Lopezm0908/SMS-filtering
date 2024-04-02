@@ -73,9 +73,6 @@ public class Whitelist : AppCompatActivity() {
                         realmQueryToArrayList()
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
-//                    addNumber(newItem)
-//                    realmQueryToArrayList()
-//                    listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -98,9 +95,13 @@ public class Whitelist : AppCompatActivity() {
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
-
-                arrayListOfNumbers.removeAt(position)
-                listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
+                lifecycleScope.launch {
+                    removeNumber(textContent)
+                    realmQueryToArrayList()
+                    listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                }
+                //arrayListOfNumbers.removeAt(position)
+                //listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
             }
 
             // Add a Cancel button and its logic
@@ -126,6 +127,15 @@ public class Whitelist : AppCompatActivity() {
                 number = newNumber
             }
             copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+        }
+    }
+
+    private suspend fun removeNumber (newNumber : String){
+
+        realm.write{
+            val numToDelete = realm.query<WhiteListNumbers>().find()
+            //delete(numToDelete)
+            deleteAll()
         }
     }
 
