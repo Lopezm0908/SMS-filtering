@@ -11,12 +11,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.MyApp
+import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
+import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
     //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
@@ -65,9 +68,14 @@ public class Whitelist : AppCompatActivity() {
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     //arrayListOfNumbers.add(newItem)
-                    addNumber(newItem)
-                    realmQueryToArrayList()
-                    listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
+                    lifecycleScope.launch {
+                        addNumber(newItem)
+                        realmQueryToArrayList()
+                        listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                    }
+//                    addNumber(newItem)
+//                    realmQueryToArrayList()
+//                    listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -112,16 +120,17 @@ public class Whitelist : AppCompatActivity() {
         }
     }
 
-    suspend fun addNumber (newNumber : String){
+    private suspend fun addNumber (newNumber : String){
         realm.write{
             val testNum = WhiteListNumbers().apply{
-                number = "test"
+                number = newNumber
             }
+            copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
         }
     }
 
     private fun realmQueryToArrayList(){
-        arrayListOfNumbers = arrayListOf<String>()
+        arrayListOfNumbers.clear()
         val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
 
         for(i in whiteListedNumbers){
