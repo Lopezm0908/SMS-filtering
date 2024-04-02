@@ -21,7 +21,7 @@ import io.realm.kotlin.ext.query
 public class Whitelist : AppCompatActivity() {
     //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
     private val realm = MyApp.realm
-    val arrayListOfNumbers = arrayListOf<String>()
+    var arrayListOfNumbers = arrayListOf<String>()
 
 
 
@@ -31,11 +31,12 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
 
-        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
-
-        for(i in whiteListedNumbers){
-            arrayListOfNumbers.add(i.number)
-        }
+//        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
+//
+//        for(i in whiteListedNumbers){
+//            arrayListOfNumbers.add(i.number)
+//        }
+        realmQueryToArrayList()
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
@@ -64,9 +65,8 @@ public class Whitelist : AppCompatActivity() {
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     //arrayListOfNumbers.add(newItem)
-                    realm.write{
-
-                    }
+                    addNumber(newItem)
+                    realmQueryToArrayList()
                     listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
@@ -112,9 +112,20 @@ public class Whitelist : AppCompatActivity() {
         }
     }
 
-//    private fun addNumber (newNumber : String){
-//        realm.write{
-//
-//        }
-//    }
+    suspend fun addNumber (newNumber : String){
+        realm.write{
+            val testNum = WhiteListNumbers().apply{
+                number = "test"
+            }
+        }
+    }
+
+    private fun realmQueryToArrayList(){
+        arrayListOfNumbers = arrayListOf<String>()
+        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
+
+        for(i in whiteListedNumbers){
+            arrayListOfNumbers.add(i.number)
+        }
+    }
 }
