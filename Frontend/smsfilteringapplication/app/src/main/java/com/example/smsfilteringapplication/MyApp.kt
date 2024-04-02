@@ -27,4 +27,12 @@ class MyApp: Application() {
             )
         )
     }
+
+    suspend fun numbDBWrite(numberDB : Realm){
+        numberDB.write{
+            val testNum = WhiteListNumbers().apply{
+                number = "12345"
+            }
+        }
+    }
 }
