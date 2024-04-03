@@ -7,20 +7,17 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
+import com.example.smsfilteringapplication.dataclasses.StringItem
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.MyApp
 import io.realm.kotlin.UpdatePolicy
-import io.realm.kotlin.delete
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.internal.getRealm
 import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
@@ -126,8 +123,9 @@ public class Whitelist : AppCompatActivity() {
 
     private suspend fun addNumber (newNumber : String){
         realm.write{
-            val testNum = WhiteListNumbers().apply{
-                number = newNumber
+            val testNum = StringItem().apply{
+                content = newNumber
+                type = "Whitelist"
             }
             copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
         }
@@ -136,7 +134,7 @@ public class Whitelist : AppCompatActivity() {
     private suspend fun removeNumber (newNumber : String){
         realm.write{
             //val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>().find().first()
-            val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>("number = $0", newNumber).find().first()
+            val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
             val latest = findLatest(numToDelete)
             if (latest != null) {
                 delete(latest)
@@ -147,10 +145,10 @@ public class Whitelist : AppCompatActivity() {
 
     private fun realmQueryToArrayList(){
         arrayListOfNumbers.clear()
-        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
+        val whiteListedNumbers = realm.query<StringItem>("type = 'Whitelist'").find().toList()
 
         for(i in whiteListedNumbers){
-            arrayListOfNumbers.add(i.number)
+            arrayListOfNumbers.add(i.content)
         }
     }
 }

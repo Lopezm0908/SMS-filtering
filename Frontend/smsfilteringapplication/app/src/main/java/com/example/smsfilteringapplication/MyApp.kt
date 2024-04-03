@@ -3,7 +3,7 @@ package com.example.smsfilteringapplication
 
 import android.app.Application
 import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
-import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
+import com.example.smsfilteringapplication.dataclasses.StringItem
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.UpdatePolicy
@@ -23,18 +23,9 @@ class MyApp: Application() {
             configuration = RealmConfiguration.create(
                 schema = setOf(
                     BlackListNumbers::class,
-                    WhiteListNumbers::class,
+                    StringItem::class,
                 )
             )
         )
-    }
-
-    suspend fun numbDBWrite(numberDB : Realm){
-        numberDB.write{
-            val testNum = WhiteListNumbers().apply{
-                number = "12345"
-            }
-            copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
-        }
     }
 }
