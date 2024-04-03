@@ -25,7 +25,8 @@ fun realmQueryToArrayList(type : String) : ArrayList<String> {
 
 suspend fun removeNumber (newNumber : String, type : String){
     realm.write{
-        val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
+        //val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
+        val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).query("type = $0", type).find().first()
         val latest = findLatest(numToDelete)
         if (latest != null) {
             delete(latest)

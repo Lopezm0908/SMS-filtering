@@ -83,7 +83,7 @@ class KeywordManager : AppCompatActivity() {
                 // Perform actions after confirmation here
                 val numToRemove = keyWordList[position]
                 lifecycleScope.launch {
-                    removeNumber(numToRemove)
+                    removeNumber(numToRemove, type)
                     keyWordList = realmQueryToArrayList(type)
                     listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
                 }

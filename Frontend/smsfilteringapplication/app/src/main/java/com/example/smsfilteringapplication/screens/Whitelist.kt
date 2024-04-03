@@ -87,7 +87,7 @@ public class Whitelist : AppCompatActivity() {
                 // Perform actions after confirmation here
                 val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
-                    removeNumber(numToRemove)
+                    removeNumber(numToRemove, type)
                     arrayListOfNumbers = realmQueryToArrayList(type)
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
