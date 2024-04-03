@@ -16,13 +16,15 @@ import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.dataclasses.StringItem
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.MyApp
+import com.example.smsfilteringapplication.dataclasses.DatabaseDriver
+import com.example.smsfilteringapplication.dataclasses.addNumber
+import com.example.smsfilteringapplication.dataclasses.realmQueryToArrayList
+import com.example.smsfilteringapplication.dataclasses.removeNumber
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
-    //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
-    private val realm = MyApp.realm
     var arrayListOfNumbers = arrayListOf<String>()
 
 
@@ -32,13 +34,7 @@ public class Whitelist : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
-
-//        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
-//
-//        for(i in whiteListedNumbers){
-//            arrayListOfNumbers.add(i.number)
-//        }
-        realmQueryToArrayList()
+        arrayListOfNumbers = realmQueryToArrayList()
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
@@ -66,10 +62,9 @@ public class Whitelist : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    //arrayListOfNumbers.add(newItem)
                     lifecycleScope.launch {
                         addNumber(newItem)
-                        realmQueryToArrayList()
+                        arrayListOfNumbers = realmQueryToArrayList()
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
@@ -97,7 +92,7 @@ public class Whitelist : AppCompatActivity() {
                 val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
                     removeNumber(numToRemove)
-                    realmQueryToArrayList()
+                    arrayListOfNumbers = realmQueryToArrayList()
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
                 //arrayListOfNumbers.removeAt(position)
@@ -118,37 +113,6 @@ public class Whitelist : AppCompatActivity() {
 
 
 
-        }
-    }
-
-    private suspend fun addNumber (newNumber : String){
-        realm.write{
-            val testNum = StringItem().apply{
-                content = newNumber
-                type = "Whitelist"
-            }
-            copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
-        }
-    }
-
-    private suspend fun removeNumber (newNumber : String){
-        realm.write{
-            //val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>().find().first()
-            val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
-            val latest = findLatest(numToDelete)
-            if (latest != null) {
-                delete(latest)
-            }
-            //deleteAll()
-        }
-    }
-
-    private fun realmQueryToArrayList(){
-        arrayListOfNumbers.clear()
-        val whiteListedNumbers = realm.query<StringItem>("type = 'Whitelist'").find().toList()
-
-        for(i in whiteListedNumbers){
-            arrayListOfNumbers.add(i.content)
         }
     }
 }

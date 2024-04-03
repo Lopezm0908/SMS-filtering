@@ -15,13 +15,13 @@ import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
 
-val numberlist = arrayListOf<String>("thing one")
+val keyWordList = arrayListOf<String>("thing one")
 class KeywordManager : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keywordmanager)
         val listView = findViewById<ListView>(R.id.keyword_listview)
-        listView.adapter= blacklistAdapter(this,numberlist)
+        listView.adapter= blacklistAdapter(this,keyWordList)
 
         val mainmenubutton = findViewById<Button>(R.id.keyword_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
@@ -45,8 +45,8 @@ class KeywordManager : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    numberlist.add(newItem)
-                    listView.adapter= blacklistAdapter(this,numberlist)
+                    keyWordList.add(newItem)
+                    listView.adapter= blacklistAdapter(this,keyWordList)
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -70,8 +70,8 @@ class KeywordManager : AppCompatActivity() {
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
 
-                numberlist.removeAt(position)
-                listView.adapter= blacklistAdapter(this,numberlist)
+                keyWordList.removeAt(position)
+                listView.adapter= blacklistAdapter(this,keyWordList)
             }
 
             // Add a Cancel button and its logic
