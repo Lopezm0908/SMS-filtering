@@ -18,7 +18,9 @@ import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.MyApp
 import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.delete
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.internal.getRealm
 import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
@@ -85,7 +87,7 @@ public class Whitelist : AppCompatActivity() {
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
 
             // Reading the text content of the clicked TextView
-            val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
+            //val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)
@@ -95,8 +97,9 @@ public class Whitelist : AppCompatActivity() {
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
+                val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
-                    removeNumber(textContent)
+                    removeNumber(numToRemove)
                     realmQueryToArrayList()
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
@@ -131,11 +134,14 @@ public class Whitelist : AppCompatActivity() {
     }
 
     private suspend fun removeNumber (newNumber : String){
-
         realm.write{
-            val numToDelete = realm.query<WhiteListNumbers>().find()
-            //delete(numToDelete)
-            deleteAll()
+            //val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>().find().first()
+            val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>("number = $0", newNumber).find().first()
+            val latest = findLatest(numToDelete)
+            if (latest != null) {
+                delete(latest)
+            }
+            //deleteAll()
         }
     }
 
