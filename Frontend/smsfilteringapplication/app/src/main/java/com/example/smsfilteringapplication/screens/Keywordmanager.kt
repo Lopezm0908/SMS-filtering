@@ -11,15 +11,24 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.dataclasses.DatabaseDriver
+import com.example.smsfilteringapplication.dataclasses.addNumber
+import com.example.smsfilteringapplication.dataclasses.realmQueryToArrayList
+import com.example.smsfilteringapplication.dataclasses.removeNumber
+import kotlinx.coroutines.launch
 
-val keyWordList = arrayListOf<String>("thing one")
+
 class KeywordManager : AppCompatActivity() {
+    private var keyWordList = arrayListOf<String>()
+    private val type = "KeyWord"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keywordmanager)
+        keyWordList = realmQueryToArrayList(type)
         val listView = findViewById<ListView>(R.id.keyword_listview)
         listView.adapter= blacklistAdapter(this,keyWordList)
 
@@ -45,8 +54,11 @@ class KeywordManager : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    keyWordList.add(newItem)
-                    listView.adapter= blacklistAdapter(this,keyWordList)
+                    lifecycleScope.launch {
+                        addNumber(newItem, type)
+                        keyWordList = realmQueryToArrayList(type)
+                        listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
+                    }
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -69,9 +81,12 @@ class KeywordManager : AppCompatActivity() {
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
-
-                keyWordList.removeAt(position)
-                listView.adapter= blacklistAdapter(this,keyWordList)
+                val numToRemove = keyWordList[position]
+                lifecycleScope.launch {
+                    removeNumber(numToRemove)
+                    keyWordList = realmQueryToArrayList(type)
+                    listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
+                }
             }
 
             // Add a Cancel button and its logic

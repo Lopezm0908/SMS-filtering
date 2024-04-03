@@ -25,16 +25,12 @@ import io.realm.kotlin.ext.query
 import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
-    var arrayListOfNumbers = arrayListOf<String>()
-
-
-
-
-
+    private var arrayListOfNumbers = arrayListOf<String>()
+    private val type = "Whitelist"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
-        arrayListOfNumbers = realmQueryToArrayList()
+        arrayListOfNumbers = realmQueryToArrayList(type)
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
@@ -63,8 +59,8 @@ public class Whitelist : AppCompatActivity() {
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
-                        addNumber(newItem)
-                        arrayListOfNumbers = realmQueryToArrayList()
+                        addNumber(newItem, type)
+                        arrayListOfNumbers = realmQueryToArrayList(type)
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
@@ -92,7 +88,7 @@ public class Whitelist : AppCompatActivity() {
                 val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
                     removeNumber(numToRemove)
-                    arrayListOfNumbers = realmQueryToArrayList()
+                    arrayListOfNumbers = realmQueryToArrayList(type)
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
                 //arrayListOfNumbers.removeAt(position)

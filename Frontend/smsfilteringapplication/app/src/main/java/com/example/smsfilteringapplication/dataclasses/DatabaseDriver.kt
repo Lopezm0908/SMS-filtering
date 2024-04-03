@@ -12,10 +12,10 @@ import io.realm.kotlin.types.RealmObject
 // inside of.
 
 private val realm = MyApp.realm
-fun realmQueryToArrayList() : ArrayList<String> {
+fun realmQueryToArrayList(type : String) : ArrayList<String> {
     val arrayListOfItems = arrayListOf<String>()
     arrayListOfItems.clear()
-    val whiteListedNumbers = realm.query<StringItem>("type = 'Whitelist'").find().toList()
+    val whiteListedNumbers = realm.query<StringItem>("type = $0", type).find().toList()
 
     for(i in whiteListedNumbers){
         arrayListOfItems.add(i.content)
@@ -23,7 +23,7 @@ fun realmQueryToArrayList() : ArrayList<String> {
     return arrayListOfItems
 }
 
-suspend fun removeNumber (newNumber : String){
+suspend fun removeNumber (newNumber : String, type : String){
     realm.write{
         val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
         val latest = findLatest(numToDelete)
@@ -32,11 +32,11 @@ suspend fun removeNumber (newNumber : String){
         }
     }
 }
-suspend fun addNumber (newNumber : String){
+suspend fun addNumber (newNumber : String, type : String){
     realm.write{
         val testNum = StringItem().apply{
             content = newNumber
-            type = "Whitelist"
+            this@apply.type = type
         }
         copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
     }
