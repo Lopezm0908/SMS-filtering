@@ -7,27 +7,42 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
+import com.example.smsfilteringapplication.dataclasses.StringItem
 import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.example.smsfilteringapplication.viewmodels.WhitelistViewModel
+import com.example.smsfilteringapplication.MyApp
+import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.ext.query
+import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
-    //val numberlist = arrayListOf<String>("thing one")
+    //since I'm moving away from the viewmodel approach, we need to interact with the database in the activity itself. Here goes...
+    private val realm = MyApp.realm
+    var arrayListOfNumbers = arrayListOf<String>()
 
-    private val viewModel: WhitelistViewModel by viewModels()
 
-    //CAMERON NOTE: PICK UP FROM HERE
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
+
+//        val whiteListedNumbers = realm.query<WhiteListNumbers>().find().toList()
+//
+//        for(i in whiteListedNumbers){
+//            arrayListOfNumbers.add(i.number)
+//        }
+        realmQueryToArrayList()
+
+
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        listView.adapter= blacklistAdapter(this,numberlist)
+        listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
 
         val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
@@ -51,8 +66,12 @@ public class Whitelist : AppCompatActivity() {
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
-                    numberlist.add(newItem)
-                    listView.adapter= blacklistAdapter(this,numberlist)
+                    //arrayListOfNumbers.add(newItem)
+                    lifecycleScope.launch {
+                        addNumber(newItem)
+                        realmQueryToArrayList()
+                        listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                    }
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
                 }
@@ -65,7 +84,7 @@ public class Whitelist : AppCompatActivity() {
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
 
             // Reading the text content of the clicked TextView
-            val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
+            //val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)
@@ -75,9 +94,14 @@ public class Whitelist : AppCompatActivity() {
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
-
-                numberlist.removeAt(position)
-                listView.adapter= blacklistAdapter(this,numberlist)
+                val numToRemove = arrayListOfNumbers[position]
+                lifecycleScope.launch {
+                    removeNumber(numToRemove)
+                    realmQueryToArrayList()
+                    listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                }
+                //arrayListOfNumbers.removeAt(position)
+                //listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
             }
 
             // Add a Cancel button and its logic
@@ -94,6 +118,37 @@ public class Whitelist : AppCompatActivity() {
 
 
 
+        }
+    }
+
+    private suspend fun addNumber (newNumber : String){
+        realm.write{
+            val testNum = StringItem().apply{
+                content = newNumber
+                type = "Whitelist"
+            }
+            copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+        }
+    }
+
+    private suspend fun removeNumber (newNumber : String){
+        realm.write{
+            //val numToDelete : WhiteListNumbers = realm.query<WhiteListNumbers>().find().first()
+            val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
+            val latest = findLatest(numToDelete)
+            if (latest != null) {
+                delete(latest)
+            }
+            //deleteAll()
+        }
+    }
+
+    private fun realmQueryToArrayList(){
+        arrayListOfNumbers.clear()
+        val whiteListedNumbers = realm.query<StringItem>("type = 'Whitelist'").find().toList()
+
+        for(i in whiteListedNumbers){
+            arrayListOfNumbers.add(i.content)
         }
     }
 }

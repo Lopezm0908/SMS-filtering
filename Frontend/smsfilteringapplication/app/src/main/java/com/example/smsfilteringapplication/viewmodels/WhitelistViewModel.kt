@@ -2,7 +2,8 @@ package com.example.smsfilteringapplication.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smsfilteringapplication.dataclasses.WhiteListNumbers
+import com.example.smsfilteringapplication.MyApp
+import com.example.smsfilteringapplication.dataclasses.StringItem
 import io.realm.kotlin.UpdatePolicy
 import kotlinx.coroutines.flow.SharingStarted
 import io.realm.kotlin.ext.query
@@ -16,7 +17,7 @@ class WhitelistViewModel : ViewModel(){
     private val realm = MyApp.realm
 
     val whitelistedNumbers = realm
-        .query<WhiteListNumbers>()
+        .query<StringItem>()
         .asFlow()
         .map { results ->
             results.list.toList()
@@ -40,10 +41,18 @@ class WhitelistViewModel : ViewModel(){
     private fun createSampleEntries(){
         viewModelScope.launch {
             realm.write {
-                val whiteList1 = WhiteListNumbers().apply {
-                    number = "Test Number!"
+                val whiteList1 = StringItem().apply {
+                    content = "Test Number 1!"
+                }
+                val whiteList2 = StringItem().apply {
+                    content = "Test Number 2!"
+                }
+                val whiteList3 = StringItem().apply {
+                    content = "Test Number 3!"
                 }
                 copyToRealm(whiteList1, updatePolicy = UpdatePolicy.ALL) //updatePolicy = When something already exists, it is UPDATED
+                copyToRealm(whiteList2, updatePolicy = UpdatePolicy.ALL)
+                copyToRealm(whiteList3, updatePolicy = UpdatePolicy.ALL)
             }
         }
     }
