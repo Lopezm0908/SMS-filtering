@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.smsfilteringapplication.screens.Blacklist
+import com.example.smsfilteringapplication.screens.Evalmailbox
 import com.example.smsfilteringapplication.screens.KeywordManager
 import com.example.smsfilteringapplication.screens.Messagereporting
 import com.example.smsfilteringapplication.screens.Whitelist
@@ -50,6 +51,12 @@ class MainActivity : AppCompatActivity() {
             ).show()
 
         //button navigation to other pages.
+        val evalbtn = findViewById<Button>(R.id.eval_mailbox_button)
+        evalbtn.setOnClickListener{
+            val intent = Intent(this, Evalmailbox::class.java)
+            startActivity(intent)
+        }
+
         val BLbutton = findViewById<Button>(R.id.BLbutton)
         BLbutton.setOnClickListener {
             val intent = Intent(this, Blacklist::class.java)

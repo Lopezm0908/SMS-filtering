@@ -42,7 +42,7 @@ class KeywordManager : AppCompatActivity() {
 
             //add item dialogue
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Add Item")
+            builder.setTitle("Add Keyword")
 
             val inflater = LayoutInflater.from(this)
             val dialogLayout = inflater.inflate(R.layout.dialogue_add_item, null)
@@ -75,7 +75,7 @@ class KeywordManager : AppCompatActivity() {
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Confirm Action")
+            builder.setTitle("Remove Keyword")
             builder.setMessage("Do you want to complete this action?")
 
             // Add a Confirm button and its logic

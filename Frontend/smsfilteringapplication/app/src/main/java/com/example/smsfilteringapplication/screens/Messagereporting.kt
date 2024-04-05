@@ -1,11 +1,14 @@
 package com.example.smsfilteringapplication.screens
 
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.BlockedNumberContract
 import android.view.LayoutInflater
 import android.widget.AdapterView
 import android.widget.Button
@@ -15,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
@@ -52,14 +56,15 @@ public class Messagereporting : AppCompatActivity() {
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Confirm Action")
-            builder.setMessage("Do you want to complete this action?")
+            builder.setTitle("Flag Message")
+            builder.setMessage("This will delete the message and add the senders number to the blacklist")
 
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
                 // Perform actions after confirmation here
                 //insert logic to add the item to the sms flagged database
                 // the app will then delete the sms from the phone as it has been flagged as spam
+                addNumberToBlockedList(fromlist.get(position))
                deleteSmsById(this, sms_id_list.get(position).toLong())
                 smsbodyList.clear()
                 fromlist.clear()
@@ -120,5 +125,13 @@ public class Messagereporting : AppCompatActivity() {
         }
         cursor?.close()
     }
-
+    fun addNumberToBlockedList(number: String) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            val values = ContentValues()
+            values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
+            contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
+        } else {
+            // Handle the lack of permission here.
+        }
+    }
 }

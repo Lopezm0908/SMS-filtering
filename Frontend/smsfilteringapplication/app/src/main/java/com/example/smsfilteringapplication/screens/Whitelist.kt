@@ -46,7 +46,7 @@ public class Whitelist : AppCompatActivity() {
 
             //add item dialogue
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Add Item")
+            builder.setTitle("Add Number")
 
             val inflater = LayoutInflater.from(this)
             val dialogLayout = inflater.inflate(R.layout.dialogue_add_item, null)
@@ -56,7 +56,7 @@ public class Whitelist : AppCompatActivity() {
 
             builder.setPositiveButton("Add") { _, _ ->
                 val newItem = editText.text.toString().trim()
-                if (newItem.isNotEmpty()) {
+                if (newItem.isNotEmpty()&& newItem.matches(Regex("^[0-9]+$"))) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
                         addNumber(newItem, type)
@@ -64,7 +64,7 @@ public class Whitelist : AppCompatActivity() {
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
-                    Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Item cannot be empty, item must be numbers only", Toast.LENGTH_SHORT).show()
                 }
             }
             builder.setNegativeButton("Cancel") { dialog, _ ->
@@ -79,7 +79,7 @@ public class Whitelist : AppCompatActivity() {
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Confirm Action")
+            builder.setTitle("Remove Number")
             builder.setMessage("Do you want to complete this action?")
 
             // Add a Confirm button and its logic
