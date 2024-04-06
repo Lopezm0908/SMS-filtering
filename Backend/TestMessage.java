@@ -2,19 +2,23 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class TestMessage {
-	private double[] weight = new double[1];
+	private double[] weight = new double[3];
 	
 	public TestMessage() {
-		weight[0] = 0.060766536750990724;
+		weight[0] = -0.03583110263073061;
+		weight[1] = 0.5168951326337814;
+		weight[2] = 0.09307722471891858;
 	}
 
 	public void Test(String a) throws IOException {
 		
 		
-		double[] SpamScore = new double[1];
+		double[] SpamScore = new double[3];
 		
 		
-		SpamScore[0] = analyzeMessage(a);
+		SpamScore[0] = analyzeMessage1(a);
+		SpamScore[1] = analyzeMessage2(a);
+		SpamScore[2] = analyzeMessage3(a);
 		
 		int result = Process(SpamScore, weight);
 		
@@ -50,16 +54,11 @@ public class TestMessage {
 		return predTarget;
 	}
 	
-	//calculates a score
-	private static double analyzeMessage(String message) {
-		//making own features
-        //does it have a link?
-        //does it include a number?
-        //does it contain text, free, win, call, prize, cash, claim, etc?
-		//does click have a certain follow up word?
+	
+	
+	public static double analyzeMessage1(String message) {
 		double SpamScore = 0;
 		
-		//original message was not changed by this point, dw i tested it
 		
 		String[] messageArray;
 		
@@ -75,7 +74,7 @@ public class TestMessage {
 				Pattern.compile(Pattern.quote(".net"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
 				Pattern.compile(Pattern.quote(".org"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true
 					) {
-				SpamScore = SpamScore + 2;
+				SpamScore = SpamScore + 1.5;
 			}
 			else if(
 				Pattern.compile(Pattern.quote(".xyz"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
@@ -101,50 +100,120 @@ public class TestMessage {
 				SpamScore = SpamScore + 4;
 			}
 			
+			
+		} //end of analysis
+		return SpamScore;
+	}
+	
+	
+	
+	//looking for certain keywords
+	public static double analyzeMessage2(String message) {
+		double SpamScore = 0;
+		
+		String[] messageArray;
+		
+		messageArray = message.split(" ");
+		for(String each : messageArray) {
+			//does it contain text, free, win, won, call, prize, cash, claim, or reward?
+			if(
+				each.equalsIgnoreCase("bonus") ||
+				each.equalsIgnoreCase("call")  ||
+				each.equalsIgnoreCase("cash")  ||
+				each.equalsIgnoreCase("claim") ||
+				each.equalsIgnoreCase("congratulations") ||
+				each.equalsIgnoreCase("free")  ||
+				each.equalsIgnoreCase("limited-time") ||
+				each.equalsIgnoreCase("prize") ||
+				each.equalsIgnoreCase("refund")||
+				each.equalsIgnoreCase("reward")||
+				each.equalsIgnoreCase("selected")  ||
+				each.equalsIgnoreCase("text")  ||
+				each.equalsIgnoreCase("txt")   ||
+				each.equalsIgnoreCase("unclaimed") ||
+				each.equalsIgnoreCase("win")   ||
+				each.equalsIgnoreCase("winner")||
+				each.equalsIgnoreCase("won")   ||
+				each.equalsIgnoreCase("XXX")   ||
+				each.equalsIgnoreCase("18+")   ||
+				each.equalsIgnoreCase("$$$")
+					) {
+				SpamScore = SpamScore + 0.8;
+			}
+			
+			//act now
+			if(each.equalsIgnoreCase("act")) {
+				String afterword = message.substring(message.toLowerCase().indexOf("act") + 4).trim();
+				if(
+						afterword.toLowerCase().startsWith("now")
+						) {
+					SpamScore = SpamScore + 3;
+				}
+			}
+			//adults only
+			else if(each.equalsIgnoreCase("adults")) {
+				String afterword = message.substring(message.toLowerCase().indexOf("adults") + 7).trim();
+				if(
+						afterword.toLowerCase().startsWith("only")
+						) {
+					SpamScore = SpamScore + 3;
+				}
+			}
+			//click here||on||now||&
+			else if(each.equalsIgnoreCase("click")) {
+				SpamScore = SpamScore + 1;
+				//makes a substring using the original message to see what's after click
+				String afterword = message.substring(message.toLowerCase().indexOf("click") + 6).trim();
+				if(
+						afterword.toLowerCase().startsWith("here") == true ||
+						afterword.toLowerCase().startsWith("on")   == true ||
+						afterword.toLowerCase().startsWith("now")  == true ||
+						afterword.startsWith("&")	 == true
+							) {
+					SpamScore = SpamScore + 3;
+				}
+			}
+			//make money
+			else if(each.equalsIgnoreCase("make")) {
+				String afterword = message.substring(message.toLowerCase().indexOf("make") + 5).trim();
+				if(
+						afterword.toLowerCase().startsWith("money")
+						) {
+					SpamScore = SpamScore + 3;
+				}
+			}
+			//hot singles
+			else if(each.equalsIgnoreCase("hot")) {
+				String afterword = message.substring(message.toLowerCase().indexOf("hot") + 4).trim();
+				if(
+						afterword.toLowerCase().startsWith("singles")
+						) {
+					SpamScore = SpamScore + 2;
+				}
+			}
+		}
+		return SpamScore;
+	}
+	
+	//looking at numbers
+	public static double analyzeMessage3(String message) {
+		double SpamScore = 0;
+		
+		
+		String[] messageArray;
+		
+		//looks at each word
+		messageArray = message.split(" ");
+		for(String each : messageArray) {
 			//does it have a number?
 			if(
 				each.matches(".*\\d.*")
 					) {
 				SpamScore = SpamScore + 1;
 			}
-			
-			//does it contain text, free, win, won, call, prize, cash, claim, or reward?
-			if(
-				each.equalsIgnoreCase("text")  ||
-				each.equalsIgnoreCase("free")  ||
-				each.equalsIgnoreCase("win")   ||
-				each.equalsIgnoreCase("won")   ||
-				each.equalsIgnoreCase("call")  ||
-				each.equalsIgnoreCase("bonus") ||
-				each.equalsIgnoreCase("prize") ||
-				each.equalsIgnoreCase("cash")  ||
-				each.equalsIgnoreCase("claim") ||
-				each.equalsIgnoreCase("reward")||
-				each.equalsIgnoreCase("refund")||
-				each.equalsIgnoreCase("winner")||
-				each.equalsIgnoreCase("txt")   ||
-				each.equalsIgnoreCase("congratulations")
-					) {
-				SpamScore = SpamScore + 0.8;
-			}
-			
-			//does click have a certain word after it?
-			if(each.equalsIgnoreCase("click")) {
-				SpamScore = SpamScore + 1;
-				
-				//makes a substring using the original message to see what's after click
-				String afterclick = message.substring(message.toLowerCase().indexOf("click") + 6).trim();
-				if(
-						afterclick.startsWith("here") == true ||
-						afterclick.startsWith("on")   == true ||
-						afterclick.startsWith("now")  == true ||
-						afterclick.startsWith("&")	  == true
-							) {
-					SpamScore = SpamScore + 3;
-				}
-			}
 		}
 		return SpamScore;
 	}
 
+	
 }
