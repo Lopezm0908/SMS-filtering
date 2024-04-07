@@ -8,7 +8,7 @@ from sklearn.utils.class_weight import compute_class_weight
 import transformers
 from transformers import AutoModel, BertTokenizerFast
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-from transformers import AdamW
+from torch.optim import AdamW
 
 # specify GPU
 device = torch.device("cuda")
@@ -50,41 +50,49 @@ pd.Series(seq_len).hist(bins = 30)
 # tokenize and encode sequences in the training set
 tokens_train = tokenizer.batch_encode_plus(
     train_text.tolist(),
-    max_length = 25,
-    pad_to_max_length=True,
+    max_length=25,
+    padding='max_length',
     truncation=True
 )
 
 # tokenize and encode sequences in the validation set
 tokens_val = tokenizer.batch_encode_plus(
     val_text.tolist(),
-    max_length = 25,
-    pad_to_max_length=True,
+    max_length=25,
+    padding='max_length',
     truncation=True
 )
 
 # tokenize and encode sequences in the test set
 tokens_test = tokenizer.batch_encode_plus(
     test_text.tolist(),
-    max_length = 25,
-    pad_to_max_length=True,
+    max_length=25,
+    padding='max_length',
     truncation=True
 )
 
 
 ## convert lists to tensors
+# Convert string labels to numeric values if needed
+label_mapping = {'ham': 0, 'spam': 1}
+train_labels_numeric = train_labels.map(label_mapping)
+val_labels_numeric = val_labels.map(label_mapping)
+test_labels_numeric = test_labels.map(label_mapping)
 
 train_seq = torch.tensor(tokens_train['input_ids'])
 train_mask = torch.tensor(tokens_train['attention_mask'])
-train_y = torch.tensor(train_labels.tolist())
+#train_y = torch.tensor(train_labels.tolist())
+train_y = torch.tensor(train_labels_numeric.tolist())
 
 val_seq = torch.tensor(tokens_val['input_ids'])
 val_mask = torch.tensor(tokens_val['attention_mask'])
-val_y = torch.tensor(val_labels.tolist())
+#val_y = torch.tensor(val_labels.tolist())
+val_y = torch.tensor(val_labels_numeric.tolist())
 
 test_seq = torch.tensor(tokens_test['input_ids'])
 test_mask = torch.tensor(tokens_test['attention_mask'])
-test_y = torch.tensor(test_labels.tolist())
+#test_y = torch.tensor(test_labels.tolist())
+test_y = torch.tensor(test_labels_numeric.tolist())
 
 
 
@@ -179,7 +187,8 @@ optimizer = AdamW(model.parameters(),lr = 1e-5)
 
 
 #compute the class weights
-class_weights = compute_class_weight('balanced', np.unique(train_labels), train_labels)
+#class_weights = compute_class_weight('balanced', np.unique(train_labels), train_labels)
+class_weights = compute_class_weight(class_weight='balanced', classes=np.unique(train_labels), y=train_labels)
 
 print("Class Weights:",class_weights)
 
@@ -275,9 +284,6 @@ def evaluate():
         # Progress update every 50 batches.
         if step % 50 == 0 and not step == 0:
             
-            # Calculate elapsed time in minutes.
-            elapsed = format_time(time.time() - t0)
-            
             # Report progress.
             print('  Batch {:>5,}  of  {:>5,}.'.format(step, len(val_dataloader)))
 
@@ -351,7 +357,7 @@ path = 'saved_weights.pt'
 model.load_state_dict(torch.load(path))
 
 
-# get predictions for test data
+""" # get predictions for test data
 with torch.no_grad():
     preds = model(test_seq.to(device), test_mask.to(device))
     preds = preds.detach().cpu().numpy()
@@ -359,4 +365,4 @@ with torch.no_grad():
 
 # model's performance
 preds = np.argmax(preds, axis = 1)
-print(classification_report(test_y, preds))
+print(classification_report(test_y, preds)) """
