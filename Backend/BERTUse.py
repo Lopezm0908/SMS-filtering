@@ -9,7 +9,16 @@ import transformers
 from transformers import AutoModel, BertTokenizerFast
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 from torch.optim import AdamW
+""" 
+        ONLY RUN THIS FILE ONCE.
+        It will generate a saved_weight.pt file at your project directory.
+        This file is half a gig, so I am not going to push it to the repository so you have to worry about it every time you pull.
+        The file is also in the .gitignore so it shouldn't be pushed from your files as well.
 
+        To run this program, you need a cuda-enabled GPU driver, which you can get from NVIDIA's website with a quick google search.
+        If you don't want to have to take the prereq steps to run this yourself, I will post my saved_weights.pt file to discord.
+        Download the discord file and place it in the root project directory (wherever you initialized git. Should have a hidden .git file in the folder).
+ """
 # specify GPU
 device = torch.device("cuda")
 
