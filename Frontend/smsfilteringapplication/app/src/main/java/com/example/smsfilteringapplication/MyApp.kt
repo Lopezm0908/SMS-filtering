@@ -3,6 +3,7 @@ package com.example.smsfilteringapplication
 
 import android.app.Application
 import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
+import com.example.smsfilteringapplication.dataclasses.EvalItem
 import com.example.smsfilteringapplication.dataclasses.StringItem
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -23,7 +24,7 @@ class MyApp: Application() {
             configuration = RealmConfiguration.create(
                 schema = setOf(
                     BlackListNumbers::class,
-                    StringItem::class,
+                    StringItem::class
                 )
             )
         )

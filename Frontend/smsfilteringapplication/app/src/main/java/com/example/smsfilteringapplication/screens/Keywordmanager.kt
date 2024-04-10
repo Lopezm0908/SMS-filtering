@@ -15,10 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.example.smsfilteringapplication.dataclasses.DatabaseDriver
-import com.example.smsfilteringapplication.dataclasses.addNumber
-import com.example.smsfilteringapplication.dataclasses.realmQueryToArrayList
-import com.example.smsfilteringapplication.dataclasses.removeNumber
+import com.example.smsfilteringapplication.dataclasses.addItem
+import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
+import com.example.smsfilteringapplication.dataclasses.removeItem
 import kotlinx.coroutines.launch
 
 
@@ -28,7 +27,7 @@ class KeywordManager : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keywordmanager)
-        keyWordList = realmQueryToArrayList(type)
+        keyWordList = stringItemQueryToArrayList(type)
         val listView = findViewById<ListView>(R.id.keyword_listview)
         listView.adapter= blacklistAdapter(this,keyWordList)
 
@@ -55,8 +54,8 @@ class KeywordManager : AppCompatActivity() {
                 if (newItem.isNotEmpty()) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
-                        addNumber(newItem, type)
-                        keyWordList = realmQueryToArrayList(type)
+                        addItem(newItem, type)
+                        keyWordList = stringItemQueryToArrayList(type)
                         listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
                     }
                 } else {
@@ -83,8 +82,8 @@ class KeywordManager : AppCompatActivity() {
                 // Perform actions after confirmation here
                 val numToRemove = keyWordList[position]
                 lifecycleScope.launch {
-                    removeNumber(numToRemove, type)
-                    keyWordList = realmQueryToArrayList(type)
+                    removeItem(numToRemove, type)
+                    keyWordList = stringItemQueryToArrayList(type)
                     listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
                 }
             }

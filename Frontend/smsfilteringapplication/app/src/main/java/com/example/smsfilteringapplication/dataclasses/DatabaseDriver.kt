@@ -2,9 +2,6 @@ package com.example.smsfilteringapplication.dataclasses
 import com.example.smsfilteringapplication.MyApp
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.ext.realmListOf
-import io.realm.kotlin.types.RealmList
-import io.realm.kotlin.types.RealmObject
 
 
 // In Kotlin, you can have top-level functions (functions that exist outside of classes).
@@ -12,20 +9,34 @@ import io.realm.kotlin.types.RealmObject
 // inside of.
 
 private val realm = MyApp.realm
-fun realmQueryToArrayList(type : String) : ArrayList<String> {
+fun stringItemQueryToArrayList(type : String, data : String = "") : ArrayList<String> {
     val arrayListOfItems = arrayListOf<String>()
     arrayListOfItems.clear()
-    val whiteListedNumbers = realm.query<StringItem>("type = $0", type).find().toList()
+    val initialQuery = realm.query<StringItem>("type = $0", type).find().toList()
 
-    for(i in whiteListedNumbers){
-        arrayListOfItems.add(i.content)
+    if (type == "Whitelist" || type == "KeyWord"){
+        for(i in initialQuery){
+            arrayListOfItems.add(i.content)
+        }
+    }
+
+    else if (type == "Eval"){
+        if(data == "content"){
+            for(i in initialQuery){
+                arrayListOfItems.add(i.content)
+            }
+        }
+        else if (data == "sender"){
+            for(i in initialQuery){
+                arrayListOfItems.add(i.sender)
+            }
+        }
     }
     return arrayListOfItems
 }
 
-suspend fun removeNumber (newNumber : String, type : String){
+suspend fun removeItem (newNumber : String, type : String){
     realm.write{
-        //val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).find().first()
         val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).query("type = $0", type).find().first()
         val latest = findLatest(numToDelete)
         if (latest != null) {
@@ -33,15 +44,33 @@ suspend fun removeNumber (newNumber : String, type : String){
         }
     }
 }
-suspend fun addNumber (newNumber : String, type : String){
+suspend fun addItem (newNumber : String = "", type : String = "", sender : String = ""){
     realm.write{
-        val testNum = StringItem().apply{
-            content = newNumber
-            this@apply.type = type
+        when (type) {
+            "Whitelist", "KeyWord" -> {
+                val testNum = StringItem().apply{
+                    content = newNumber
+                    this@apply.type = type
+                }
+                copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+            }
+            "Eval" -> {
+                val testNum = StringItem().apply{
+                    this@apply.sender = sender
+                    content = newNumber
+                    this@apply.type = type
+                }
+                copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+            }
+            else -> {
+                println("Invalid type.")
+            }
         }
-        copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+
+
     }
 }
+
 
 class DatabaseDriver {
 }

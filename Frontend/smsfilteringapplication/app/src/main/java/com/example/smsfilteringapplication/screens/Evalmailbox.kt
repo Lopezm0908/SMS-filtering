@@ -22,6 +22,7 @@ class Evalmailbox : AppCompatActivity() {
     private val fromlist = arrayListOf<String>()
     val bodylist = arrayListOf<String>()
     private val smsbodyList = arrayListOf<String>()
+    private val type = "Whitelist"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.eval_mailbox)

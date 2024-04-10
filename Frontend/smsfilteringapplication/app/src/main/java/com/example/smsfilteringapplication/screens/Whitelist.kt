@@ -13,15 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.dataclasses.StringItem
 import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.example.smsfilteringapplication.MyApp
-import com.example.smsfilteringapplication.dataclasses.DatabaseDriver
-import com.example.smsfilteringapplication.dataclasses.addNumber
-import com.example.smsfilteringapplication.dataclasses.realmQueryToArrayList
-import com.example.smsfilteringapplication.dataclasses.removeNumber
-import io.realm.kotlin.UpdatePolicy
-import io.realm.kotlin.ext.query
+import com.example.smsfilteringapplication.dataclasses.addItem
+import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
+import com.example.smsfilteringapplication.dataclasses.removeItem
 import kotlinx.coroutines.launch
 
 public class Whitelist : AppCompatActivity() {
@@ -30,7 +25,7 @@ public class Whitelist : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
-        arrayListOfNumbers = realmQueryToArrayList(type)
+        arrayListOfNumbers = stringItemQueryToArrayList(type)
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
@@ -59,8 +54,8 @@ public class Whitelist : AppCompatActivity() {
                 if (newItem.isNotEmpty()&& newItem.matches(Regex("^[0-9]+$"))) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
-                        addNumber(newItem, type)
-                        arrayListOfNumbers = realmQueryToArrayList(type)
+                        addItem(newItem, type)
+                        arrayListOfNumbers = stringItemQueryToArrayList(type)
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
@@ -87,8 +82,8 @@ public class Whitelist : AppCompatActivity() {
                 // Perform actions after confirmation here
                 val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
-                    removeNumber(numToRemove, type)
-                    arrayListOfNumbers = realmQueryToArrayList(type)
+                    removeItem(numToRemove, type)
+                    arrayListOfNumbers = stringItemQueryToArrayList(type)
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
                 //arrayListOfNumbers.removeAt(position)
