@@ -8,10 +8,15 @@ import android.net.Uri
 import android.provider.Telephony
 import android.telephony.SmsMessage
 import android.widget.Toast
+import com.example.smsfilteringapplication.dataclasses.DetermineSpam
 
 class SmsReceiver : BroadcastReceiver() {
     private val TAG = "SmsReceiver"
     var values = ContentValues()
+    var keywordlist = mutableListOf<String>("key1", "key2")
+    var sendergl = String()
+    var bodygl = String()
+    val checkMsg = DetermineSpam()
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             val bundle = intent.extras
@@ -19,12 +24,22 @@ class SmsReceiver : BroadcastReceiver() {
                 val pdus = bundle.get("pdus") as Array<*>
                 for (pdu in pdus) {
                     val smsMessage = SmsMessage.createFromPdu(pdu as ByteArray)
-                    val sender = smsMessage.originatingAddress.toString()
-                    val messageBody = smsMessage.messageBody.toString()
-
-                writeSmsToInbox(context,sender,messageBody)
+                     sendergl = smsMessage.originatingAddress.toString()
+                     bodygl = smsMessage.messageBody.toString()
 
                     }
+                if (isStringInSmsBody(keywordlist, bodygl) == false && checkMsg.Determine(bodygl) == false) {
+                    writeSmsToInbox(context, sendergl, bodygl)
+                }
+                else
+                {
+                    Toast.makeText(
+                        context,
+                        "message from $sendergl has been blocked by spam value ${checkMsg.Determine(bodygl)}",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                }
                 }
             }
         }
@@ -45,3 +60,15 @@ class SmsReceiver : BroadcastReceiver() {
             e.printStackTrace()
         }
     }
+fun isStringInSmsBody(listOfStrings: List<String>, smsBody: String): Boolean {
+    // Iterate through each string in the list
+    for (string in listOfStrings) {
+        // Check if the current string is contained in the SMS message body
+        if (smsBody.contains(string, ignoreCase = true)) {
+            // Return true if a match is found
+            return true
+        }
+    }
+    // Return false if no matches are found
+    return false
+}

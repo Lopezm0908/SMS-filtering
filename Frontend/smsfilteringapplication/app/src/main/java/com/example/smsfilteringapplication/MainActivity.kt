@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_MMS, android.Manifest.permission.WRITE_CONTACTS,android.Manifest.permission.RECEIVE_WAP_PUSH,android.Manifest.permission.READ_SMS,android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.SEND_SMS),111)
         }
-        else
-            Toast.makeText(
-                applicationContext,
-                "permissions granted",
-                Toast.LENGTH_LONG
-            ).show()
+        else{}
+           // Toast.makeText(
+        //        applicationContext,
+       //         "permissions granted",
+        //        Toast.LENGTH_LONG
+        //    ).show()
 
         //button navigation to other pages.
         val evalbtn = findViewById<Button>(R.id.eval_mailbox_button)
