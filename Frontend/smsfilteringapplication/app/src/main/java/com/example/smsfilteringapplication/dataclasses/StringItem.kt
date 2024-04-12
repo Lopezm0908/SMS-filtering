@@ -6,5 +6,5 @@ class StringItem : RealmObject {
     var type : String = ""
     var content: String = ""
     var sender = ""
-    var ID = ""
+    var id = ""
 }

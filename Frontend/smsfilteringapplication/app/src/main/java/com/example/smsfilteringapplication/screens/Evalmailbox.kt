@@ -16,15 +16,14 @@ import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.smsviewadapter
 import android.content.Context
+import com.example.smsfilteringapplication.dataclasses.QueryField
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
 
 class Evalmailbox : AppCompatActivity() {
     private val type = "Eval"
-    private val data = "sender"
-    val sms_id_list = arrayListOf<String>()
-    private val fromlist = arrayListOf<String>()
-    val bodylist = arrayListOf<String>()
-    private val smsbodyList = arrayListOf<String>()
+    var sms_id_list = arrayListOf<String>()
+    private var fromlist = arrayListOf<String>()
+    private var smsbodyList = arrayListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.eval_mailbox)
@@ -32,8 +31,11 @@ class Evalmailbox : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.eval_listview)
         //function to query database sms messages into the from list and body list must be called here @cameron
         //these are filler values
-        smsbodyList.add("this is a test message")
-        fromlist.add("4096655441")
+        //smsbodyList.add("this is a test message")
+        smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
+        //fromlist.add("4096655441")
+        fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
+        sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
 
         listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
 
