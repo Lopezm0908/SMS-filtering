@@ -47,33 +47,19 @@ suspend fun removeItem (newNumber : String, type : String){
 }
 
 
-suspend fun addItem (newNumber : String, type : String){
+suspend fun addItem (newNumber : String, type : String, id : String = "", sender : String = ""){
     realm.write{
         val testNum = StringItem().apply{
             content = newNumber
             this@apply.type = type
-
-        }
-        when (type) {
-            "Whitelist", "KeyWord" -> {
-                val testNum = StringItem().apply{
-                    content = newNumber
-                    this@apply.type = type
-                }
-                copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
+            if (id != ""){
+                ID = id
             }
-            "Eval" -> {
-                val testNum = StringItem().apply{
-                    this@apply.sender = sender
-                    content = newNumber
-                    this@apply.type = type
-                }
-                copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
-            }
-            else -> {
-                println("Invalid type.")
+            if (sender != ""){
+                this@apply.sender = sender
             }
         }
+        copyToRealm(testNum, updatePolicy = UpdatePolicy.ALL)
     }
 }
 
