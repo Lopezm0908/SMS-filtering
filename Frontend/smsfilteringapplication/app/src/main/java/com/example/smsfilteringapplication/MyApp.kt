@@ -18,13 +18,21 @@ class MyApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        realm = Realm.open(
-            configuration = RealmConfiguration.create(
-                schema = setOf(
-                    BlackListNumbers::class,
-                    StringItem::class
-                )
+        val config = RealmConfiguration.Builder(
+            schema = setOf(
+                BlackListNumbers::class,
+                StringItem::class
             )
-        )
+        ).deleteRealmIfMigrationNeeded().build()
+
+//        realm = Realm.open(
+//            configuration = RealmConfiguration.create(
+//                schema = setOf(
+//                    BlackListNumbers::class,
+//                    StringItem::class
+//                )
+//            )
+//        )
+        realm = Realm.open(config)
     }
 }

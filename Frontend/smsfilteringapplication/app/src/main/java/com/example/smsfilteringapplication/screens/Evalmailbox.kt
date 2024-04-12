@@ -16,13 +16,15 @@ import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.smsviewadapter
 import android.content.Context
+import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
 
 class Evalmailbox : AppCompatActivity() {
+    private val type = "Eval"
+    private val data = "sender"
     val sms_id_list = arrayListOf<String>()
     private val fromlist = arrayListOf<String>()
     val bodylist = arrayListOf<String>()
     private val smsbodyList = arrayListOf<String>()
-    private val type = "Whitelist"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.eval_mailbox)
