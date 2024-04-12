@@ -22,7 +22,7 @@ from torch.optim import AdamW
 # specify GPU
 device = torch.device("cuda")
 
-data = pd.read_csv("Backend\\Datasets\\spam.csv", encoding='latin')
+data = pd.read_csv("spam.csv", encoding='latin')
 data.head()
 
 print(data['v1'].value_counts(normalize = True))

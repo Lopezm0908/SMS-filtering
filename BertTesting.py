@@ -63,6 +63,6 @@ def classify_string(text):
     return predicted_class
 
 # Test the function with a hardcoded string
-text_to_classify = "England v Macedonia - dont miss the goals/team news. Txt ur national team to 87077 eg ENGLAND to 87077 Try:WALES, SCOTLAND 4txt/Ì¼1.20 POBOXox36504W45WQ 16+"
+text_to_classify = "Do you want a New Nokia 3510i colour phone DeliveredTomorrow? With 300 free minutes to any mobile + 100 free texts + Free Camcorder reply or call 08000930705."
 classification = classify_string(text_to_classify)
 print("Predicted Class:", classification)
