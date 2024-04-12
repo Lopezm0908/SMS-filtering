@@ -53,7 +53,7 @@ suspend fun addItem (newNumber : String, type : String, id : String = "", sender
             content = newNumber
             this@apply.type = type
             if (id != ""){
-                ID = id
+                this@apply.id = id
             }
             if (sender != ""){
                 this@apply.sender = sender

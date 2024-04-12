@@ -16,8 +16,12 @@ import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.smsviewadapter
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.dataclasses.QueryField
+import com.example.smsfilteringapplication.dataclasses.removeItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
+import com.example.smsfilteringapplication.services.blacklistAdapter
+import kotlinx.coroutines.launch
 
 class Evalmailbox : AppCompatActivity() {
     private val type = "Eval"
@@ -84,16 +88,27 @@ class Evalmailbox : AppCompatActivity() {
                 //sms_id_list.clear()
 
                 //call function to query messages from database into bodylist and from list
-
+                smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
+                fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
+                sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
                 //listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
             }
 
             // Add a Cancel button and its logic
             builder.setNegativeButton("Flag") { dialog, which ->
             // need function to delete message from database here placeholder below
-                fromlist.removeAt(position)
-                smsbodyList.removeAt(position)
-                sms_id_list.removeAt(position)
+//                fromlist.removeAt(position)
+//                smsbodyList.removeAt(position)
+//                sms_id_list.removeAt(position)
+                val fromListToRemove = fromlist[position]
+                val smsBodyListToRemove = smsbodyList[position]
+                val smsIdListToRemove = sms_id_list[position]
+
+                lifecycleScope.launch {
+                    removeItem(smsBodyListToRemove, type)
+                    smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
+                    listView.adapter = blacklistAdapter(this@Evalmailbox, smsbodyList)
+                }
                 //function to add number to blacklist
                 addNumberToBlockedList(fromlist.get(position))
                 //smsbodyList.clear()
