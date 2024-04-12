@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
+import com.example.smsfilteringapplication.dataclasses.QueryField
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.dataclasses.addItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
@@ -25,7 +26,7 @@ public class Whitelist : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
-        arrayListOfNumbers = stringItemQueryToArrayList(type)
+        arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
@@ -55,7 +56,7 @@ public class Whitelist : AppCompatActivity() {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
                         addItem(newItem, type)
-                        arrayListOfNumbers = stringItemQueryToArrayList(type)
+                        arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
@@ -83,7 +84,7 @@ public class Whitelist : AppCompatActivity() {
                 val numToRemove = arrayListOfNumbers[position]
                 lifecycleScope.launch {
                     removeItem(numToRemove, type)
-                    arrayListOfNumbers = stringItemQueryToArrayList(type)
+                    arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
                 //arrayListOfNumbers.removeAt(position)

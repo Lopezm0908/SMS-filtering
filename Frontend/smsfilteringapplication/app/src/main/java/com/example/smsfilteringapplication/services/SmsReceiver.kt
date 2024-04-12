@@ -15,8 +15,8 @@ class SmsReceiver : BroadcastReceiver() {
     private val TAG = "SmsReceiver"
     private val type = "KeyWord"
     var values = ContentValues()
-    //var keywordlist = mutableListOf<String>("key1", "key2")
-    var keyWordList = stringItemQueryToArrayList(type)
+    var keywordlist = mutableListOf<String>("key1", "key2")
+    //var keyWordList = stringItemQueryToArrayList(type)
     var sendergl = String()
     var bodygl = String()
     val checkMsg = DetermineSpam()
@@ -31,7 +31,7 @@ class SmsReceiver : BroadcastReceiver() {
                      bodygl = smsMessage.messageBody.toString()
 
                     }
-                if (isStringInSmsBody(keyWordList, bodygl) == false && checkMsg.Determine(bodygl) == false) {
+                if (isStringInSmsBody(keywordlist, bodygl) == false && checkMsg.Determine(bodygl) == false) {
                     writeSmsToInbox(context, sendergl, bodygl)
                 }
                 else

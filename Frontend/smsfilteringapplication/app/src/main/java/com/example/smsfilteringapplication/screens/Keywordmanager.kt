@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
+import com.example.smsfilteringapplication.dataclasses.QueryField
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.dataclasses.addItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
@@ -27,7 +28,7 @@ class KeywordManager : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.keywordmanager)
-        keyWordList = stringItemQueryToArrayList(type)
+        keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
         val listView = findViewById<ListView>(R.id.keyword_listview)
         listView.adapter= blacklistAdapter(this,keyWordList)
 
@@ -55,7 +56,7 @@ class KeywordManager : AppCompatActivity() {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     lifecycleScope.launch {
                         addItem(newItem, type)
-                        keyWordList = stringItemQueryToArrayList(type)
+                        keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
                         listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
                     }
                 } else {
@@ -83,7 +84,7 @@ class KeywordManager : AppCompatActivity() {
                 val numToRemove = keyWordList[position]
                 lifecycleScope.launch {
                     removeItem(numToRemove, type)
-                    keyWordList = stringItemQueryToArrayList(type)
+                    keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
                     listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
                 }
             }

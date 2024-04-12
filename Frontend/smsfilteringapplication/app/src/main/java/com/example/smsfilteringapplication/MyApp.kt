@@ -24,15 +24,6 @@ class MyApp: Application() {
                 StringItem::class
             )
         ).deleteRealmIfMigrationNeeded().build()
-
-//        realm = Realm.open(
-//            configuration = RealmConfiguration.create(
-//                schema = setOf(
-//                    BlackListNumbers::class,
-//                    StringItem::class
-//                )
-//            )
-//        )
         realm = Realm.open(config)
     }
 }
