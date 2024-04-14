@@ -1,7 +1,10 @@
 package com.example.smsfilteringapplication.dataclasses
 import android.app.DownloadManager.Query
+import android.util.Log
 import com.example.smsfilteringapplication.MyApp
+import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.exceptions.RealmException
 import io.realm.kotlin.ext.query
 import java.lang.reflect.Field
 import kotlin.reflect.KProperty
@@ -39,13 +42,13 @@ fun stringItemQueryToArrayList(type : String, data : QueryField) : ArrayList<Str
 suspend fun removeItem (newNumber : String, type : String){
     realm.write{
         val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).query("type = $0", type).find().first()
-        val latest = findLatest(numToDelete)
-        if (latest != null) {
-            delete(latest)
+        val latestnum = findLatest(numToDelete)
+
+        if (latestnum != null) {
+            delete(latestnum)
         }
     }
 }
-
 
 suspend fun addItem (newNumber : String, type : String, id : String = "", sender : String = ""){
     realm.write{

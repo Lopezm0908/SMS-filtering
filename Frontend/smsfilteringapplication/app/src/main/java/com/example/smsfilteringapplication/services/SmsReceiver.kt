@@ -5,49 +5,93 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Telephony
 import android.telephony.SmsMessage
+import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.dataclasses.DetermineSpam
 import com.example.smsfilteringapplication.dataclasses.QueryField
+import com.example.smsfilteringapplication.dataclasses.addItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
-class SmsReceiver : BroadcastReceiver() {
+class SmsReceiver : BroadcastReceiver()
+{
+    object SmsApplicationScope {
+        val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    }
+    companion object {
+        private var lastProcessedTime: Long = 0
+    }
     private val TAG = "SmsReceiver"
     private val type = "KeyWord"
     var values = ContentValues()
-    //var keywordlist = mutableListOf<String>("key1", "key2")
+    var shouldwrite = String()
     var keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
     var sendergl = String()
     var bodygl = String()
     val checkMsg = DetermineSpam()
+    val sms_id_list = arrayListOf<String>()
     override fun onReceive(context: Context, intent: Intent) {
+        keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
+
+
+        Log.d(TAG, "onReceive triggered")
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             val bundle = intent.extras
             if (bundle != null) {
+                Log.d(TAG, "SMS bundle is not null")
                 val pdus = bundle.get("pdus") as Array<*>
+                val format = bundle.getString("format")
+                var fullMessage = ""
                 for (pdu in pdus) {
-                    val smsMessage = SmsMessage.createFromPdu(pdu as ByteArray)
-                     sendergl = smsMessage.originatingAddress.toString()
-                     bodygl = smsMessage.messageBody.toString()
-
-                    }
-                if (isStringInSmsBody(keyWordList, bodygl) == false && checkMsg.Determine(bodygl) == false) {
-                    writeSmsToInbox(context, sendergl, bodygl)
+                    val smsMessage = SmsMessage.createFromPdu(pdu as ByteArray, format ?: "")
+                    fullMessage += smsMessage.messageBody
                 }
-                else
-                {
+                sendergl = pdus[0]?.let {
+                    val smsMessage = SmsMessage.createFromPdu(it as ByteArray)
+                    smsMessage.originatingAddress.toString()
+                } ?: ""
+                bodygl = fullMessage
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - lastProcessedTime < 500) { // 1 second threshold
+                    Log.d(TAG, "Ignoring duplicate SMS received within a short interval.")
+                    return
+                }
+                lastProcessedTime = currentTime
+
+                Log.d(TAG, "Checking spam filters")
+                if (!isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                    Log.d(TAG, "Writing SMS to inbox")
+                    writeSmsToInbox(context, sendergl, bodygl)
+                } else {
+                    Log.d(TAG, "Blocking SMS as spam")
                     Toast.makeText(
                         context,
-                        "message from $sendergl has been blocked by spam value ${checkMsg.Determine(bodygl)}",
+                        "message from $sendergl has been blocked by spam filter",
                         Toast.LENGTH_LONG
                     ).show()
+                    SmsApplicationScope.applicationScope.launch {
+                        addItem(bodygl,"Eval","1", sendergl)
+                    }
+                    Log.d(TAG, "Sending blocked message to evaluation")
 
-                }
                 }
             }
         }
     }
+
+
+
+        }
+
+
+
     fun writeSmsToInbox(context: Context, sender: String, messageBody: String) {
         val values = ContentValues().apply {
             put("address", sender)
@@ -57,7 +101,6 @@ class SmsReceiver : BroadcastReceiver() {
 
             put("type", "1") //1 for received
         }
-
         try {
             context.contentResolver.insert(Uri.parse("content://sms/inbox"), values)
         } catch (e: Exception) {

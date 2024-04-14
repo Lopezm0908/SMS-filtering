@@ -55,7 +55,7 @@ dependencies {
 
 
     // https://mvnrepository.com/artifact/org.tensorflow/tensorflow-lite
-    implementation("org.tensorflow.tensorflow-core-platform:0.3.3")
+    //implementation("org.tensorflow.tensorflow-core-platform:0.3.3")
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation("commons-io:commons-io:2.16.1")

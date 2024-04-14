@@ -53,9 +53,9 @@ public class Whitelist : AppCompatActivity() {
             builder.setPositiveButton("Add") { _, _ ->
                 val newItem = editText.text.toString().trim()
                 if (newItem.isNotEmpty()&& newItem.matches(Regex("^[0-9]+$"))) {
-                    //if conditions are met the item is added to the back end blacklist and the list view is updated
+                    //if conditions are met the item is added to the back end whitelist and the list view is updated
                     lifecycleScope.launch {
-                        addItem(newItem, type)
+                        addItem(newItem,type)
                         arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
                         listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }

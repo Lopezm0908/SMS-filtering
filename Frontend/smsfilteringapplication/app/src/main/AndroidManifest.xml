@@ -37,12 +37,7 @@
             </intent-filter>
         </activity>
 
-      <!--  <receiver android:name=".services.SmsReceiver"
-    android:exported="true">
-    <intent-filter android:priority="1000">
-        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-    </intent-filter>
-</receiver> -->
+
         <activity
             android:name=".screens.Evalmailbox"
             android:exported="true">
