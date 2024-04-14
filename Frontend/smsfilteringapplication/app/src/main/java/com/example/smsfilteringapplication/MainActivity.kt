@@ -1,14 +1,11 @@
 package com.example.smsfilteringapplication
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Telephony
 import android.util.Log
@@ -23,32 +20,27 @@ import com.example.smsfilteringapplication.screens.KeywordManager
 import com.example.smsfilteringapplication.screens.Messagereporting
 import com.example.smsfilteringapplication.screens.Whitelist
 import com.example.smsfilteringapplication.services.SmsReceiver
+import java.io.DataOutputStream
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var receiver: SmsReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
+        //val suProcess = Runtime.getRuntime().exec("su")
+
         //define and register receiver
         receiver = SmsReceiver()
         registerReceiver(receiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        checkAndRequestDefaultSmsApp(this)
 
-        //ask to make default sms application. popup doesnt appear for some reason if someone has a way to fix that would be cool.
-        val setSmsAppIntent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-        setSmsAppIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
-        startActivity(setSmsAppIntent)
 
         //checks if permissions already exist if they do not it asks for them
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.RECEIVE_MMS, android.Manifest.permission.WRITE_CONTACTS,android.Manifest.permission.RECEIVE_WAP_PUSH,android.Manifest.permission.READ_SMS,android.Manifest.permission.RECEIVE_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.SEND_SMS),111)
         }
         else{}
-           // Toast.makeText(
-        //        applicationContext,
-       //         "permissions granted",
-        //        Toast.LENGTH_LONG
-        //    ).show()
 
         //button navigation to other pages.
         val evalbtn = findViewById<Button>(R.id.eval_mailbox_button)
@@ -97,34 +89,6 @@ class MainActivity : AppCompatActivity() {
 
 
     //more testing functions
-    fun deleteSMS(context: Context, message: String, number: String) {
-        try {
-          Log.d("sms blocker", "Deleting SMS from inbox")
-            val uriSms = Uri.parse("content://sms/inbox")
-            val c = context.contentResolver.query(
-                uriSms, arrayOf(
-                    "_id", "thread_id", "address",
-                    "person", "date", "body"
-                ), null, null, null
-            )
-            if (c != null && c.moveToFirst()) {
-                do {
-                    val id = c.getLong(0)
-                    val threadId = c.getLong(1)
-                    val address = c.getString(2)
-                    val body = c.getString(5)
-                    if (message == body && address == number) {
-                        Log.d("sms blocker","Deleting SMS with id: $threadId")
-                        context.contentResolver.delete(
-                            Uri.parse("content://sms/$id"), null, null
-                        )
-                    }
-                } while (c.moveToNext())
-            }
-        } catch (e: Exception) {
-           Log.d("sms blocker","Could not delete SMS from inbox: " + e.message)
-        }
-    }
         fun checkAndRequestDefaultSmsApp(activity: Activity) {
             if (Telephony.Sms.getDefaultSmsPackage(activity) != activity.packageName) {
                 // Not default SMS app
@@ -148,35 +112,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Permission already granted, proceed with reading SMS or blocked numbers
             }
-        }
-
-        // Handle the permission result
-      //  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-     //       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-     //       if (requestCode == 111) {
-     //           if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, proceed with the action
-     //           } else {
-                    // Permission denied, handle the error
-      //          }
-    //        }
-  //      }
-        }
+        }}
 
 
-// ignore this
-// private fun receiveMsg() {
-//      var br = object: BroadcastReceiver(){
-//        override fun onReceive(p0: Context?, p1: Intent?) {
-//            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT && Telephony.Sms.ADDRESS != "4099445824"){
-//              for(sms in Telephony.Sms.Intents.getMessagesFromIntent(p1)) {
-//                  Toast.makeText(
-//                     applicationContext,
-//                    sms.displayMessageBody,
-//                    Toast.LENGTH_LONG
-//                ).show()
-
-//               }
-//           }
-
-//     }
