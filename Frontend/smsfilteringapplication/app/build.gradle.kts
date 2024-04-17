@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("io.realm.kotlin")
-//    id("com.chaquo.python")
+    id("com.chaquo.python")
 }
 
 android {
@@ -16,11 +16,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        ndk {
-//            // On Apple silicon, you can omit x86_64.
-//            abiFilters += listOf("arm64-v8a", "x86_64")
-//        }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // On Apple silicon, you can omit x86_64.
+            abiFilters += listOf("arm64-v8a", "x86_64")
+        }
     }
 
     buildTypes {
