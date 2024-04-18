@@ -37,6 +37,7 @@ class SmsReceiver : BroadcastReceiver()
     var bodygl = String()
     val checkMsg = DetermineSpam()
     val sms_id_list = arrayListOf<String>()
+//    var permissionLevel =
     override fun onReceive(context: Context, intent: Intent) {
         keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
 

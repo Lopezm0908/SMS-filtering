@@ -41,6 +41,20 @@ android {
     }
 }
 
+chaquopy {
+    defaultConfig {
+        buildPython("C:/Python3.8/python.exe")
+        version = "3.8"
+        pip {
+            install("cargo")
+            install("torch")
+            install("numpy")
+            install("pandas")
+            install("transformers")
+        }
+    }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
