@@ -160,6 +160,26 @@ class SmsReceiver : BroadcastReceiver()
                                 if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
                                     writeSmsToInbox(context, sendergl, bodygl)
                                 }
+                                else{
+                                    if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                        if (!checkMsg.Determine(bodygl) && !isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
+                                            Log.d(TAG, "Writing SMS to inbox")
+                                            writeSmsToInbox(context, sendergl, bodygl)
+                                        } else {
+                                            Log.d(TAG, "Blocking SMS as spam")
+                                            Toast.makeText(
+                                                context,
+                                                "message from $sendergl has been blocked by spam filter",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+
+                                        }
+                                    }
+                                }
+                                if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
+                                        Log.d(TAG, "Writing SMS to inbox")
+                                        writeSmsToInbox(context, sendergl, bodygl)
+                                }
                             }
                         }
                     }
