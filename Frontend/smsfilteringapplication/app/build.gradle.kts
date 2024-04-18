@@ -43,14 +43,10 @@ android {
 
 chaquopy {
     defaultConfig {
-        buildPython("C:/Python3.8/python.exe")
-        version = "3.8"
+        buildPython("C:/Python/python.exe")
+        version = "3.12"
         pip {
-            install("cargo")
-            install("torch")
-            install("numpy")
-            install("pandas")
-            install("transformers")
+            install("requests")
         }
     }
 }
