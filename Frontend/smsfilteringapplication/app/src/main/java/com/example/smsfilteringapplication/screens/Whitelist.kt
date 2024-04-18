@@ -37,12 +37,12 @@ public class Whitelist : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.whitelist_listview)
         listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
 //        Function to test if chaquopy is working
-//        lifecycleScope.launch {
-//            val newItem: String = pyFunc?.call().toString()
-//            addItem(newItem,type)
-//            arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-//            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
-//        }
+        lifecycleScope.launch {
+            val newItem: String = pyFunc?.call().toString()
+            addItem(newItem,type)
+            arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
+            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+        }
 
         val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {

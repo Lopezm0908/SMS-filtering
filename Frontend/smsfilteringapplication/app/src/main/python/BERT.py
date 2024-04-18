@@ -4,20 +4,21 @@ import requests
 # API endpoint URL
 url = 'http://127.0.0.1:5000/api'
 
-# JSON payload to send
-payload = {
-    "text": "Buy Space Invaders 4 a chance 2 win orig Arcade Game console. Press 0 for Games Arcade (std WAP charge) See o2.co.uk/games 4 Terms + settings. No purchase"
-}
 
-# Convert payload to JSON string
-json_payload = json.dumps(payload)
 
 # Set the headers to specify JSON content type
 headers = {'Content-Type': 'application/json'}
 
 
 
-def BertApiRequest():
+def BertApiRequest(message):
+    # JSON payload to send
+    payload = {
+        "text": message
+    }
+
+    # Convert payload to JSON string
+    json_payload = json.dumps(payload)
     # Send POST request
     response = requests.post(url, data=json_payload, headers=headers)
 
