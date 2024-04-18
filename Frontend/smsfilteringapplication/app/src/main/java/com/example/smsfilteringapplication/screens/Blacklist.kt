@@ -50,7 +50,6 @@ public class Blacklist : AppCompatActivity() {
             //add item dialogue
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Add Item")
-
             val inflater = LayoutInflater.from(this)
             val dialogLayout = inflater.inflate(R.layout.dialogue_add_item, null)
 

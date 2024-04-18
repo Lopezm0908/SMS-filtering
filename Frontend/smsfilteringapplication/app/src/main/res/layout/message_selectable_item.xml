@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_corner"
+    android:backgroundTint="#007AFF">
 
     <TextView
         android:id="@+id/from_label"
@@ -13,18 +15,17 @@
         android:text="From : "
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/from_data"
         android:layout_width="166dp"
         android:layout_height="38dp"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:text="test"
-        android:textColor="#000000"
-        android:textColorHighlight="#000000"
-        android:textColorHint="#000000"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/from_label"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,15 +38,17 @@
         android:text="Body : "
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/from_label" />
+        app:layout_constraintTop_toBottomOf="@+id/from_label"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/body_data"
         android:layout_width="192dp"
         android:layout_height="129dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="28dp"
         android:text="body"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/body_label"
         app:layout_constraintTop_toBottomOf="@+id/from_data" />

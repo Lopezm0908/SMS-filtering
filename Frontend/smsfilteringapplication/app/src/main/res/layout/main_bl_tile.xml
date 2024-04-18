@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/background_tv"
-        android:layout_width="389dp"
-        android:layout_height="293dp"
+        android:layout_width="382dp"
+        android:layout_height="503dp"
         android:layout_x="10dp"
         android:layout_y="181dp"
         android:background="@drawable/rounded_corner"
@@ -16,6 +16,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,36 +39,38 @@
 
     <TextView
         android:id="@+id/Bl_label_desc"
-        android:layout_width="341dp"
-        android:layout_height="117dp"
+        android:layout_width="333dp"
+        android:layout_height="193dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="25dp"
         android:layout_x="42dp"
         android:layout_y="277dp"
+        android:clickable="false"
+        android:focusable="false"
         android:text="block numbers that have known spam sending behavior."
         android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/background_tv"
         app:layout_constraintEnd_toEndOf="@+id/background_tv"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.102"
         app:layout_constraintStart_toStartOf="@+id/background_tv"
         app:layout_constraintTop_toBottomOf="@+id/Bl_label_txt"
-        app:layout_constraintVertical_bias="0.0"
-        android:focusable="false"
-        android:clickable="false"/>
+        app:layout_constraintVertical_bias="0.054" />
 
     <Button
         android:id="@+id/tile_bl_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
+        android:layout_width="169dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="128dp"
         android:layout_x="242dp"
         android:layout_y="408dp"
         android:backgroundTint="@color/black"
         android:text="Lets go!"
         app:layout_constraintBottom_toBottomOf="@+id/background_tv"
-        app:layout_constraintEnd_toEndOf="@+id/background_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Bl_label_desc"
-        app:layout_constraintVertical_bias="0.369" />
+        app:layout_constraintVertical_bias="0.786" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

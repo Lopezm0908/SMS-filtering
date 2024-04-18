@@ -2,6 +2,7 @@ package com.example.smsfilteringapplication.services
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +10,22 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.screens.*
 
-class mainmenuadapter(private val mContext: Context) : BaseAdapter() {
-    private val mainarraylocal = arrayListOf("Evaluation Mailbox", "Blacklist", "Message Reporting", "Whitelist", "Keywords")
-    private val descarraylocal = arrayListOf("eval description", "blacklist description", "message reporting description", "whitelist description", "keyword description")
 
+class mainmenuadapter(private val mContext: Context) : BaseAdapter() {
+    private val mainarraylocal = arrayListOf("Evaluation Mailbox", "Blacklist", "Message Reporting", "Whitelist", "Keywords", "Settings")
+    private val descarraylocal = arrayListOf("Review messages marked as spam in your evaluation mailbox. Decide whether to confirm them as spam, refining the filter, or allow them through if they were mistakenly flagged. Keep your inbox tailored to your preferences with every evaluation.", "Block unwanted texts effortlessly by adding specific numbers to your blacklist. Never receive messages from unwanted contacts again", "Take control of your inbox by reporting unwanted messages as spam. Help improve the effectiveness of the spam filter for yourself and other users by flagging unsolicited or harmful texts.", "Ensure you never miss important messages by allowing specific numbers to bypass your SMS filter. Keep communication open with trusted contacts without any interruption.", "Customize your message filtering by setting up keywords. If any incoming message contains these keywords, you can choose to have it flagged or blocked according to your preferences.","Enjoy the flexibility to tailor your messaging app exactly to your liking, ensuring a seamless and secure communication experience every time you use it.")
+    private val colorList = listOf(
+        R.color.darkPastelBlue,
+        R.color.darkPastelPurple,
+        R.color.darkPastelGreen,
+        R.color.darkPastelRed,
+        R.color.darkPastelOrange,
+        R.color.darkPastelPink
+    )
     override fun getCount(): Int = mainarraylocal.size
 
     override fun getItem(position: Int): Any = mainarraylocal[position]
@@ -32,7 +42,11 @@ class mainmenuadapter(private val mContext: Context) : BaseAdapter() {
         val colorlist = arrayListOf<Int>()
         mainTextView.text = mainarraylocal[position]
         descTextView.text = descarraylocal[position]
+        val colorId = colorList[position % colorList.size] // Use modulus to cycle through colors
+
         //backgroundtv.setBackgroundColor(colorlist.get(position))
+        val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(mContext, colorId))
+        backgroundtv.backgroundTintList = colorStateList
         buttonItem.setOnClickListener {
             val intent = when (position) {
                 0 -> Intent(mContext, Evalmailbox::class.java)

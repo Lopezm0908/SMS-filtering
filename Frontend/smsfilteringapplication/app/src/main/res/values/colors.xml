@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorRed">#D32F2F</color>
+    <color name="colorBlue">#2196F3</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorYellow">#FFEB3B</color>
+    <color name="darkPrimary">#121212</color>  <!-- Very dark grey, almost black -->
+    <color name="darkSecondary">#333333</color> <!-- Dark grey -->
+    <color name="darkTertiary">#1E88E5</color>  <!-- Dark blue -->
+    <color name="darkQuaternary">#D81B60</color> <!-- Dark pink -->
+    <color name="darkQuinary">#388E3C</color>    <!-- Dark green -->
+    <color name="darkSenary">#FFEB3B</color>    <!-- Bright yellow for accent -->
+    <color name="darkPastelBlue">#334455</color> <!-- Dark, desaturated blue -->
+    <color name="darkPastelPurple">#423C55</color> <!-- Dark, muted purple -->
+    <color name="darkPastelGreen">#3A564F</color> <!-- Dark, muted green -->
+    <color name="darkPastelRed">#563434</color>   <!-- Dark, muted red -->
+    <color name="darkPastelOrange">#55443C</color> <!-- Dark, muted orange -->
+    <color name="darkPastelPink">#55424B</color>  <!-- Dark, muted pink -->
 </resources>

@@ -16,8 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.chaquo.python.PyObject
-import com.chaquo.python.Python
+//import com.chaquo.python.PyObject
+//import com.chaquo.python.Python
 import com.example.smsfilteringapplication.screens.Blacklist
 import com.example.smsfilteringapplication.screens.Evalmailbox
 import com.example.smsfilteringapplication.screens.KeywordManager
