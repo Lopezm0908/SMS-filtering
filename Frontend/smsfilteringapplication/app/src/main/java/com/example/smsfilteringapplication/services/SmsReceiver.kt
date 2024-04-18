@@ -11,6 +11,8 @@ import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
 import com.example.smsfilteringapplication.dataclasses.DetermineSpam
 import com.example.smsfilteringapplication.dataclasses.QueryField
 import com.example.smsfilteringapplication.dataclasses.addItem
@@ -30,6 +32,10 @@ class SmsReceiver : BroadcastReceiver()
     }
     private val TAG = "SmsReceiver"
     private val type = "KeyWord"
+    val py: Python = Python.getInstance()
+    val module: PyObject = py.getModule("BERT")
+    val pyFunc: PyObject? = module["returnInt"]
+
     var values = ContentValues()
     var shouldwrite = String()
     var keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
@@ -37,6 +43,7 @@ class SmsReceiver : BroadcastReceiver()
     var bodygl = String()
     val checkMsg = DetermineSpam()
     val sms_id_list = arrayListOf<String>()
+//    var permissionLevel =
     override fun onReceive(context: Context, intent: Intent) {
         keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
 

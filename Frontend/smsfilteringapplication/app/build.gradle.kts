@@ -36,6 +36,16 @@ android {
     }
 }
 
+chaquopy {
+    defaultConfig {
+        buildPython("C:/Python/python.exe")
+        version = "3.12"
+        pip {
+            install("requests")
+        }
+    }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
