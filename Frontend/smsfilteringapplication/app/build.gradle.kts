@@ -43,7 +43,8 @@ android {
 
 chaquopy {
     defaultConfig {
-        buildPython("C:/Python/python.exe")
+//        If your getting errors related to python version, link your python install here. It needs to be python 3.12.x
+//        buildPython("C:/Python/python.exe")
         version = "3.12"
         pip {
             install("requests")
