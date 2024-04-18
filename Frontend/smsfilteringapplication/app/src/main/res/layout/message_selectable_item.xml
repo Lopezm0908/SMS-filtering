@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_corner"
-    android:backgroundTint="#007AFF">
+    android:backgroundTint="#579AFF">
 
     <TextView
         android:id="@+id/from_label"

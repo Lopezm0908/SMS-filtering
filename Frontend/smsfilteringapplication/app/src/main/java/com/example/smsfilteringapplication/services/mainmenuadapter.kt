@@ -44,7 +44,7 @@ class mainmenuadapter(private val mContext: Context) : BaseAdapter() {
         descTextView.text = descarraylocal[position]
         val colorId = colorList[position % colorList.size] // Use modulus to cycle through colors
 
-        //backgroundtv.setBackgroundColor(colorlist.get(position))
+
         val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(mContext, colorId))
         backgroundtv.backgroundTintList = colorStateList
         buttonItem.setOnClickListener {
@@ -54,6 +54,7 @@ class mainmenuadapter(private val mContext: Context) : BaseAdapter() {
                 2 -> Intent(mContext, Messagereporting::class.java)
                 3 -> Intent(mContext, Whitelist::class.java)
                 4 -> Intent(mContext, KeywordManager::class.java)
+                5 -> Intent(mContext, settings::class.java)
                 else -> return@setOnClickListener
             }
             mContext.startActivity(intent)

@@ -75,6 +75,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".screens.settings"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Smoke and mirrors -->
         <!-- BroadcastReceiver that listens for incoming SMS messages -->

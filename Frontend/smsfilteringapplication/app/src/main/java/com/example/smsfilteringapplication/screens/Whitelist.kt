@@ -99,10 +99,7 @@ public class Whitelist : AppCompatActivity() {
                     arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
                     listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
-                //arrayListOfNumbers.removeAt(position)
-                //listView.adapter= blacklistAdapter(this,arrayListOfNumbers)
             }
-
             // Add a Cancel button and its logic
             builder.setNegativeButton("Cancel") { dialog, which ->
 
