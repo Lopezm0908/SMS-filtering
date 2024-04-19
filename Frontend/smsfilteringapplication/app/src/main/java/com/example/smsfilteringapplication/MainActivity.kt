@@ -36,15 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.mainredesign)
         val listView = findViewById<ListView>(R.id.main_menu_view)
         listView.adapter= mainmenuadapter(this) //custom list adapter telling list what to render.
-        listView.setOnItemClickListener { _, _, position, _ ->
-            Toast.makeText(
-                applicationContext,
-                "permissions granted",
-                Toast.LENGTH_LONG
-            ).show()
-            snapToListItem(listView, position)
-        }
-        //val suProcess = Runtime.getRuntime().exec("su")
+
 
         //define and register receiver
         receiver = SmsReceiver()
@@ -103,13 +95,7 @@ class MainActivity : AppCompatActivity() {
                 // Permission already granted, proceed with reading SMS or blocked numbers
             }
         }
-             fun snapToListItem(listView: ListView, position: Int) {
-                 listView.post {
-                     val itemHeight = listView.getChildAt(0).height
-                     val screenHeight = resources.displayMetrics.heightPixels
-                     val scrollY = position * itemHeight - screenHeight / 2 + itemHeight / 2
-                     listView.smoothScrollToPositionFromTop(position, scrollY)
-                 }
-}}
+
+}
 
 
