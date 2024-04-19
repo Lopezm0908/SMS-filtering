@@ -77,52 +77,17 @@ class SmsReceiver : BroadcastReceiver()
                 Log.d(TAG, "Checking spam filters")
                 val pyFunc: PyObject? = module["BertApiRequest"]
                 val newItem: String = pyFunc?.call(bodygl).toString()
-                Toast.makeText(
-                    context,
-                    "message from $newItem",
-                    Toast.LENGTH_LONG
-                ).show()
-                if(GlobalValues.getCheckboxState(context, "bertcheck")== false){
-                if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
-                    if (!checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
                         Log.d(TAG, "Writing SMS to inbox")
                         writeSmsToInbox(context, sendergl, bodygl)
-                    } else {
-                        Log.d(TAG, "Blocking SMS as spam")
-                        Toast.makeText(
-                            context,
-                            "message from $sendergl has been blocked by spam filter",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        SmsApplicationScope.applicationScope.launch {
-                            addItem(bodygl,"Eval","1", sendergl)
-                        }
-                        Log.d(TAG, "Sending blocked message to evaluation")
-                    }
+                    return
                 }
-                else{
-                if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                    if (!isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
-                        Log.d(TAG, "Writing SMS to inbox")
-                        writeSmsToInbox(context, sendergl, bodygl)
-                    } else {
-                        Log.d(TAG, "Blocking SMS as spam")
-                        Toast.makeText(
-                            context,
-                            "message from $sendergl has been blocked by spam filter",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        SmsApplicationScope.applicationScope.launch {
-                            addItem(bodygl,"Eval","1", sendergl)
-                        }
-                        Log.d(TAG, "Sending blocked message to evaluation")
-                    }
-                }
-                else{
-                    if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
-                        if (!isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+
+                  else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                        if (!checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                             Log.d(TAG, "Writing SMS to inbox")
                             writeSmsToInbox(context, sendergl, bodygl)
+                            return
                         } else {
                             Log.d(TAG, "Blocking SMS as spam")
                             Toast.makeText(
@@ -130,17 +95,15 @@ class SmsReceiver : BroadcastReceiver()
                                 "message from $sendergl has been blocked by spam filter",
                                 Toast.LENGTH_LONG
                             ).show()
-                            SmsApplicationScope.applicationScope.launch {
-                                addItem(bodygl,"Eval","1", sendergl)
-                            }
-                            Log.d(TAG, "Sending blocked message to evaluation")
+                            return
                         }
                     }
-                    else{
-                        if(GlobalValues.getCheckboxState(context, "evalcheck") == false && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
-                            if (!checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+
+                      else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
+                            if (!isStringInSmsBody(keyWordList, bodygl)  && sendergl.isNotEmpty()) {
                                 Log.d(TAG, "Writing SMS to inbox")
                                 writeSmsToInbox(context, sendergl, bodygl)
+                                return
                             } else {
                                 Log.d(TAG, "Blocking SMS as spam")
                                 Toast.makeText(
@@ -148,13 +111,17 @@ class SmsReceiver : BroadcastReceiver()
                                     "message from $sendergl has been blocked by spam filter",
                                     Toast.LENGTH_LONG
                                 ).show()
+                                return
+
+
                             }
                         }
-                        else{
-                            if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                                if (!isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
+
+                          else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                if (!isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                     Log.d(TAG, "Writing SMS to inbox")
                                     writeSmsToInbox(context, sendergl, bodygl)
+                                    return
                                 } else {
                                     Log.d(TAG, "Blocking SMS as spam")
                                     Toast.makeText(
@@ -162,18 +129,24 @@ class SmsReceiver : BroadcastReceiver()
                                         "message from $sendergl has been blocked by spam filter",
                                         Toast.LENGTH_LONG
                                     ).show()
-
+                                    return
                                 }
                             }
-                            else{
-                                if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                                    writeSmsToInbox(context, sendergl, bodygl)
+
+                             else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
+
+                                        Log.d(TAG, "Writing SMS to inbox")
+                                        writeSmsToInbox(context, sendergl, bodygl)
+                                    return
+
+
                                 }
-                                else{
-                                    if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
-                                        if (!checkMsg.Determine(bodygl) && !isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
+
+                                  else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                                        if ( !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                             Log.d(TAG, "Writing SMS to inbox")
                                             writeSmsToInbox(context, sendergl, bodygl)
+                                            return
                                         } else {
                                             Log.d(TAG, "Blocking SMS as spam")
                                             Toast.makeText(
@@ -181,95 +154,19 @@ class SmsReceiver : BroadcastReceiver()
                                                 "message from $sendergl has been blocked by spam filter",
                                                 Toast.LENGTH_LONG
                                             ).show()
+                                            SmsApplicationScope.applicationScope.launch {
+                                                addItem(bodygl,"Eval","1", sendergl)
+                                            }
+                                            Log.d(TAG, "Sending blocked message to evaluation")
+                                            return
+                                        }
+                                    }
 
-                                        }
-                                    }
-                                }
-                                if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
-                                        Log.d(TAG, "Writing SMS to inbox")
-                                        writeSmsToInbox(context, sendergl, bodygl)
-                                }
-                            }}
-                        }
-                    }
-                }
-                }
-
-                //if bert is selected
-                else {
-                    if(GlobalValues.getCheckboxState(context, "bertcheck")== true){
-                        if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
-                            if (!checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
-                                Log.d(TAG, "Writing SMS to inbox")
-                                writeSmsToInbox(context, sendergl, bodygl)
-                            } else {
-                                Log.d(TAG, "Blocking SMS as spam")
-                                Toast.makeText(
-                                    context,
-                                    "message from $sendergl has been blocked by spam filter",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                SmsApplicationScope.applicationScope.launch {
-                                    addItem(bodygl,"Eval","1", sendergl)
-                                }
-                                Log.d(TAG, "Sending blocked message to evaluation")
-                            }
-                        }
-                        else{
-                            if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                                if (!isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
-                                    Log.d(TAG, "Writing SMS to inbox")
-                                    writeSmsToInbox(context, sendergl, bodygl)
-                                } else {
-                                    Log.d(TAG, "Blocking SMS as spam")
-                                    Toast.makeText(
-                                        context,
-                                        "message from $sendergl has been blocked by spam filter",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    SmsApplicationScope.applicationScope.launch {
-                                        addItem(bodygl,"Eval","1", sendergl)
-                                    }
-                                    Log.d(TAG, "Sending blocked message to evaluation")
-                                }
-                            }
-                            else{
-                                if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
-                                    if (!isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
-                                        Log.d(TAG, "Writing SMS to inbox")
-                                        writeSmsToInbox(context, sendergl, bodygl)
-                                    } else {
-                                        Log.d(TAG, "Blocking SMS as spam")
-                                        Toast.makeText(
-                                            context,
-                                            "message from $sendergl has been blocked by spam filter",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        SmsApplicationScope.applicationScope.launch {
-                                            addItem(bodygl,"Eval","1", sendergl)
-                                        }
-                                        Log.d(TAG, "Sending blocked message to evaluation")
-                                    }
-                                }
-                                else{
-                                    if(GlobalValues.getCheckboxState(context, "evalcheck") == false && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
-                                        if (!checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
-                                            Log.d(TAG, "Writing SMS to inbox")
-                                            writeSmsToInbox(context, sendergl, bodygl)
-                                        } else {
-                                            Log.d(TAG, "Blocking SMS as spam")
-                                            Toast.makeText(
-                                                context,
-                                                "message from $sendergl has been blocked by spam filter",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                                    else{
-                                        if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
+                                      else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
                                             if (!isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
                                                 Log.d(TAG, "Writing SMS to inbox")
                                                 writeSmsToInbox(context, sendergl, bodygl)
+                                                return
                                             } else {
                                                 Log.d(TAG, "Blocking SMS as spam")
                                                 Toast.makeText(
@@ -277,18 +174,39 @@ class SmsReceiver : BroadcastReceiver()
                                                     "message from $sendergl has been blocked by spam filter",
                                                     Toast.LENGTH_LONG
                                                 ).show()
-
+                                                SmsApplicationScope.applicationScope.launch {
+                                                    addItem(bodygl,"Eval","1", sendergl)
+                                                }
+                                                Log.d(TAG, "Sending blocked message to evaluation")
+                                                return
                                             }
                                         }
-                                        else{
-                                            if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                                                writeSmsToInbox(context, sendergl, bodygl)
+
+                                          else if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                if (!isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                                                    Log.d(TAG, "Writing SMS to inbox")
+                                                    writeSmsToInbox(context, sendergl, bodygl)
+                                                    return
+                                                } else {
+                                                    Log.d(TAG, "Blocking SMS as spam")
+                                                    Toast.makeText(
+                                                        context,
+                                                        "message from $sendergl has been blocked by spam filter",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                    SmsApplicationScope.applicationScope.launch {
+                                                        addItem(bodygl,"Eval","1", sendergl)
+                                                    }
+                                                    Log.d(TAG, "Sending blocked message to evaluation")
+                                                    return
+                                                }
                                             }
-                                            else{
-                                                if(GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
-                                                    if (!checkMsg.Determine(bodygl) && !isStringInSmsBody(keyWordList, bodygl) && sendergl.isNotEmpty()) {
+
+                                            else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                    if (newItem == "False" && sendergl.isNotEmpty()) {
                                                         Log.d(TAG, "Writing SMS to inbox")
                                                         writeSmsToInbox(context, sendergl, bodygl)
+                                                        return
                                                     } else {
                                                         Log.d(TAG, "Blocking SMS as spam")
                                                         Toast.makeText(
@@ -296,32 +214,154 @@ class SmsReceiver : BroadcastReceiver()
                                                             "message from $sendergl has been blocked by spam filter",
                                                             Toast.LENGTH_LONG
                                                         ).show()
-
+                                                        return
                                                     }
                                                 }
-                                            }
-                                            if(GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
-                                                Log.d(TAG, "Writing SMS to inbox")
-                                                writeSmsToInbox(context, sendergl, bodygl)
-                                            }
-                                        }}
-                                }
-                            }
-                        }
-                    }
-                }
+
+                                                  else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                        if (newItem =="False" && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                                                            Log.d(TAG, "Writing SMS to inbox")
+                                                            writeSmsToInbox(context, sendergl, bodygl)
+                                                            return
+                                                        } else {
+                                                            Log.d(TAG, "Blocking SMS as spam")
+                                                            Toast.makeText(
+                                                                context,
+                                                                "message from $sendergl has been blocked by spam filter",
+                                                                Toast.LENGTH_LONG
+                                                            ).show()
+                                                            return
+
+                                                        }
+                                                    }
+
+                                                      else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                            if (!isStringInSmsBody(keyWordList, bodygl) && newItem =="False" && sendergl.isNotEmpty()) {
+                                                                Log.d(TAG, "Writing SMS to inbox")
+                                                                writeSmsToInbox(context, sendergl, bodygl)
+                                                                return
+                                                            } else {
+                                                                Log.d(TAG, "Blocking SMS as spam")
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    "message from $sendergl has been blocked by spam filter",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+                                                                return
+
+                                                            }
+                                                        }
+
+                                                          else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                if (newItem =="False" && !isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                                                                    Log.d(TAG, "Writing SMS to inbox")
+                                                                    writeSmsToInbox(context, sendergl, bodygl)
+                                                                    return
+                                                                } else {
+                                                                    Log.d(TAG, "Blocking SMS as spam")
+                                                                    Toast.makeText(
+                                                                        context,
+                                                                        "message from $sendergl has been blocked by spam filter",
+                                                                        Toast.LENGTH_LONG
+                                                                    ).show()
+                                                                    return
+
+                                                                }
+                                                            }
+
+                                                               else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                                    if (newItem =="False" && sendergl.isNotEmpty()) {
+                                                                        Log.d(TAG, "Writing SMS to inbox")
+                                                                        writeSmsToInbox(context, sendergl, bodygl)
+                                                                        return
+                                                                    } else {
+                                                                        Log.d(TAG, "Blocking SMS as spam")
+                                                                        Toast.makeText(
+                                                                            context,
+                                                                            "message from $sendergl has been blocked by spam filter",
+                                                                            Toast.LENGTH_LONG
+                                                                        ).show()
+                                                                        SmsApplicationScope.applicationScope.launch {
+                                                                            addItem(bodygl,"Eval","1", sendergl)
+                                                                        }
+                                                                        Log.d(TAG, "Sending blocked message to evaluation")
+                                                                        return
+                                                                    }
+                                                                }
+
+                                                                   else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                        if (newItem =="False" && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                                                                            Log.d(TAG, "Writing SMS to inbox")
+                                                                            writeSmsToInbox(context, sendergl, bodygl)
+                                                                            return
+                                                                        } else {
+                                                                            Log.d(TAG, "Blocking SMS as spam")
+                                                                            Toast.makeText(
+                                                                                context,
+                                                                                "message from $sendergl has been blocked by spam filter",
+                                                                                Toast.LENGTH_LONG
+                                                                            ).show()
+                                                                            SmsApplicationScope.applicationScope.launch {
+                                                                                addItem(bodygl,"Eval","1", sendergl)
+                                                                            }
+                                                                            Log.d(TAG, "Sending blocked message to evaluation")
+                                                                            return
+                                                                        }
+                                                                    }
+
+                                                                      else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                                            if (!isStringInSmsBody(keyWordList, bodygl) && newItem =="False" && sendergl.isNotEmpty()) {
+                                                                                Log.d(TAG, "Writing SMS to inbox")
+                                                                                writeSmsToInbox(context, sendergl, bodygl)
+                                                                                return
+                                                                            } else {
+                                                                                Log.d(TAG, "Blocking SMS as spam")
+                                                                                Toast.makeText(
+                                                                                    context,
+                                                                                    "message from $sendergl has been blocked by spam filter",
+                                                                                    Toast.LENGTH_LONG
+                                                                                ).show()
+                                                                                SmsApplicationScope.applicationScope.launch {
+                                                                                    addItem(bodygl,"Eval","1", sendergl)
+                                                                                }
+                                                                                Log.d(TAG, "Sending blocked message to evaluation")
+                                                                                return
+                                                                            }
+                                                                        }
+
+                                                                           else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                                if (newItem =="False" && !isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
+                                                                                    Log.d(TAG, "Writing SMS to inbox")
+                                                                                    writeSmsToInbox(context, sendergl, bodygl)
+                                                                                    return
+                                                                                } else {
+                                                                                    Log.d(TAG, "Blocking SMS as spam")
+                                                                                    Toast.makeText(
+                                                                                        context,
+                                                                                        "message from $sendergl has been blocked by spam filter",
+                                                                                        Toast.LENGTH_LONG
+                                                                                    ).show()
+                                                                                    SmsApplicationScope.applicationScope.launch {
+                                                                                        addItem(bodygl,"Eval","1", sendergl)
+                                                                                    }
+                                                                                    Log.d(TAG, "Sending blocked message to evaluation")
+                                                                                    return
+                                                                                }
+                                                                            }
+                                                                    }
+
+                                                                    }
+                                                                }
+                                                            }
 
 
 
 
 
-            }
-        }
-    }
 
 
 
-        }
+
 
 
 
