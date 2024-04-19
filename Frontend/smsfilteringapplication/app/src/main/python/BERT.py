@@ -2,8 +2,8 @@ import json
 import requests
 
 # API endpoint URL
-url = 'http://127.0.0.1:5000/api'
-
+url = 'http://10.0.2.2:8080/api'
+# url = 'https://google.com'
 
 
 # Set the headers to specify JSON content type
@@ -21,7 +21,7 @@ def BertApiRequest(message):
     json_payload = json.dumps(payload)
     # Send POST request
     response = requests.post(url, data=json_payload, headers=headers)
-
+    # response = requests.get(url)
     # Check if the request was successful (HTTP status code 200)
     if response.status_code == 200:
         # Print response data
@@ -33,6 +33,8 @@ def BertApiRequest(message):
             return False
         elif determination == "spam":
             return True
+        # return "it worked"
+
     else:
         # Print error message
         print(f"Error: {response.status_code} - {response.text}")
@@ -40,4 +42,3 @@ def BertApiRequest(message):
 
 def returnInt():
     return 7
-

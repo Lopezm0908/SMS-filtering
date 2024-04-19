@@ -29,16 +29,24 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
         arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-        //val py: Python = Python.getInstance()
-       // val module: PyObject = py.getModule("BERT")
-       // val pyFunc: PyObject? = module["BertApiRequest"]
+        val py: Python = Python.getInstance()
+        val module: PyObject = py.getModule("BERT")
+        val pyFunc: PyObject? = module["BertApiRequest"]
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
         listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
+
 //        Function to test if chaquopy is working
         lifecycleScope.launch {
+            val message: String = "hello"
+            val newItem: String = pyFunc?.call(message).toString()
+            addItem(newItem, type)
+            arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
+            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+        }
 
+        lifecycleScope.launch {
             arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
             listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
         }
