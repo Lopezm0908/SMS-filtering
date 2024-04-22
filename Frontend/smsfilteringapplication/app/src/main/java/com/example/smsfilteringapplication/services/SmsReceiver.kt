@@ -76,7 +76,7 @@ class SmsReceiver : BroadcastReceiver()
 
                 Log.d(TAG, "Checking spam filters")
                 val pyFunc: PyObject? = module["BertApiRequest"]
-                val newItem: String = pyFunc?.call(bodygl).toString()
+                //val newItem: String = pyFunc?.call(bodygl).toString()
                 if(GlobalValues.getCheckboxState(context, "bertcheck")== false && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
                         Log.d(TAG, "Writing SMS to inbox")
                         writeSmsToInbox(context, sendergl, bodygl)
@@ -203,7 +203,8 @@ class SmsReceiver : BroadcastReceiver()
                                             }
 
                                             else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
-                                                    if (newItem == "False" && sendergl.isNotEmpty()) {
+                                                val newItem: String = pyFunc?.call(bodygl).toString()
+                                                if (newItem == "False" && sendergl.isNotEmpty()) {
                                                         Log.d(TAG, "Writing SMS to inbox")
                                                         writeSmsToInbox(context, sendergl, bodygl)
                                                         return
@@ -219,6 +220,7 @@ class SmsReceiver : BroadcastReceiver()
                                                 }
 
                                                   else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                        val newItem: String = pyFunc?.call(bodygl).toString()
                                                         if (newItem =="False" && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                                             Log.d(TAG, "Writing SMS to inbox")
                                                             writeSmsToInbox(context, sendergl, bodygl)
@@ -236,7 +238,8 @@ class SmsReceiver : BroadcastReceiver()
                                                     }
 
                                                       else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
-                                                            if (!isStringInSmsBody(keyWordList, bodygl) && newItem =="False" && sendergl.isNotEmpty()) {
+                                                        val newItem: String = pyFunc?.call(bodygl).toString()
+                                                        if (!isStringInSmsBody(keyWordList, bodygl) && newItem =="False" && sendergl.isNotEmpty()) {
                                                                 Log.d(TAG, "Writing SMS to inbox")
                                                                 writeSmsToInbox(context, sendergl, bodygl)
                                                                 return
@@ -253,6 +256,7 @@ class SmsReceiver : BroadcastReceiver()
                                                         }
 
                                                           else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== false  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                val newItem: String = pyFunc?.call(bodygl).toString()
                                                                 if (newItem =="False" && !isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                                                     Log.d(TAG, "Writing SMS to inbox")
                                                                     writeSmsToInbox(context, sendergl, bodygl)
@@ -270,6 +274,7 @@ class SmsReceiver : BroadcastReceiver()
                                                             }
 
                                                                else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                                    val newItem: String = pyFunc?.call(bodygl).toString()
                                                                     if (newItem =="False" && sendergl.isNotEmpty()) {
                                                                         Log.d(TAG, "Writing SMS to inbox")
                                                                         writeSmsToInbox(context, sendergl, bodygl)
@@ -290,6 +295,7 @@ class SmsReceiver : BroadcastReceiver()
                                                                 }
 
                                                                    else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== false && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                        val newItem: String = pyFunc?.call(bodygl).toString()
                                                                         if (newItem =="False" && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                                                             Log.d(TAG, "Writing SMS to inbox")
                                                                             writeSmsToInbox(context, sendergl, bodygl)
@@ -310,6 +316,7 @@ class SmsReceiver : BroadcastReceiver()
                                                                     }
 
                                                                       else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== false){
+                                                                            val newItem: String = pyFunc?.call(bodygl).toString()
                                                                             if (!isStringInSmsBody(keyWordList, bodygl) && newItem =="False" && sendergl.isNotEmpty()) {
                                                                                 Log.d(TAG, "Writing SMS to inbox")
                                                                                 writeSmsToInbox(context, sendergl, bodygl)
@@ -330,6 +337,7 @@ class SmsReceiver : BroadcastReceiver()
                                                                         }
 
                                                                            else if(GlobalValues.getCheckboxState(context, "bertcheck")== true && GlobalValues.getCheckboxState(context, "evalcheck")== true  && GlobalValues.getCheckboxState(context, "keycheck")== true && GlobalValues.getCheckboxState(context,"logic")== true){
+                                                                                val newItem: String = pyFunc?.call(bodygl).toString()
                                                                                 if (newItem =="False" && !isStringInSmsBody(keyWordList, bodygl) && !checkMsg.Determine(bodygl) && sendergl.isNotEmpty()) {
                                                                                     Log.d(TAG, "Writing SMS to inbox")
                                                                                     writeSmsToInbox(context, sendergl, bodygl)
