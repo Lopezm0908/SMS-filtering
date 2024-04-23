@@ -88,16 +88,15 @@ class Evalmailbox : AppCompatActivity() {
                 Log.d(TAG, "removing item from eval database")
                 lifecycleScope.launch {
                     removeItem(smsbodyList.get(position), type)
+                    //call function to query messages from database into bodylist and from list
                     smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                    listView.adapter = blacklistAdapter(this@Evalmailbox, smsbodyList)
+                    fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
+                    sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
+                    listView.adapter= smsviewadapter(this@Evalmailbox,fromlist,smsbodyList)
                 }
 
 
-                //call function to query messages from database into bodylist and from list
-                smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
-                sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
-                listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
+
 
             }
 
@@ -110,14 +109,13 @@ class Evalmailbox : AppCompatActivity() {
                 lifecycleScope.launch {
                     removeItem(smsbodyList.get(position), type)
                     smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                    listView.adapter = blacklistAdapter(this@Evalmailbox, smsbodyList)
+                    fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
+                    sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
+                    listView.adapter= smsviewadapter(this@Evalmailbox,fromlist,smsbodyList)
                 }
 
                 //requery sms
-                smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
-                sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
-                listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
+
             }
 
             // set the dialog to close when the user touches outside of it

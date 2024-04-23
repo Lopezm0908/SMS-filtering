@@ -60,7 +60,7 @@
         android:layout_marginRight="-152dp"
         android:layout_toEndOf="@+id/keyword_mainmenubtn"
         android:backgroundTint="@color/darkPastelOrange"
-        android:text="Add Number"
+        android:text="Add keyword"
         />
 
 </RelativeLayout>

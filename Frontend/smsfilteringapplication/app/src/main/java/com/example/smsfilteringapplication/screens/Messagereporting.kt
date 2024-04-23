@@ -19,10 +19,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
+import com.example.smsfilteringapplication.dataclasses.QueryField
+import com.example.smsfilteringapplication.dataclasses.removeItem
+import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
 import com.example.smsfilteringapplication.services.blacklistAdapter
 import com.example.smsfilteringapplication.services.smsviewadapter
+import kotlinx.coroutines.launch
 
 public class Messagereporting : AppCompatActivity() {
     val sms_id_list = arrayListOf<String>()
@@ -51,7 +56,7 @@ public class Messagereporting : AppCompatActivity() {
         }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-
+        val whitelistnumbers = stringItemQueryToArrayList("Whitelist", QueryField.CONTENT)
 
 
             // Set the message and title for the dialog
@@ -65,13 +70,22 @@ public class Messagereporting : AppCompatActivity() {
                 //insert logic to add the item to the sms flagged database
                 // the app will then delete the sms from the phone as it has been flagged as spam
                 addNumberToBlockedList(fromlist.get(position))
-               deleteSmsById(this, sms_id_list.get(position).toLong())
-                smsbodyList.clear()
-                fromlist.clear()
-                sms_id_list.clear()
-                readSms()
-                listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
+                lifecycleScope.launch {
+                    if((fromlist.get(position) in whitelistnumbers)) {
+                        removeItem(fromlist.get(position), "Whitelist")}
+                        deleteSmsById(this@Messagereporting, sms_id_list.get(position).toLong())
+                        smsbodyList.clear()
+                        fromlist.clear()
+                        sms_id_list.clear()
+                        readSms()
+                        listView.adapter =
+                            smsviewadapter(this@Messagereporting, fromlist, smsbodyList)
+
+                }
+
             }
+
+
 
             // Add a Cancel button and its logic
             builder.setNegativeButton("Cancel") { dialog, which ->
