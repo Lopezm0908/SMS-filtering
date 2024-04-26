@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.smsfilteringapplication.R
 
-class blacklistAdapter(context: Context,numberarray: ArrayList<String>): BaseAdapter() {
+class BlacklistAdapter(context: Context, numberarray: ArrayList<String>): BaseAdapter() {
     private val mContext: Context
     private val numberArrayLocal = numberarray
 

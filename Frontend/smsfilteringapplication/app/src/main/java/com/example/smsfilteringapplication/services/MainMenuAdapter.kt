@@ -52,7 +52,7 @@ class MainMenuAdapter(private val mContext: Context) : BaseAdapter() {
                 2 -> Intent(mContext, MessageReporting::class.java)
                 3 -> Intent(mContext, Whitelist::class.java)
                 4 -> Intent(mContext, KeywordManager::class.java)
-                5 -> Intent(mContext, settings::class.java)
+                5 -> Intent(mContext, Settings::class.java)
                 else -> return@setOnClickListener
             }
             mContext.startActivity(intent)

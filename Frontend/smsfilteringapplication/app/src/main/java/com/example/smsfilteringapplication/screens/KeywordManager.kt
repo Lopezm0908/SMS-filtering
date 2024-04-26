@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.dataclasses.QueryField
-import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.services.BlacklistAdapter
 import com.example.smsfilteringapplication.dataclasses.addItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
 import com.example.smsfilteringapplication.dataclasses.removeItem
@@ -30,7 +30,7 @@ class KeywordManager : AppCompatActivity() {
         setContentView(R.layout.keywordmanager)
         keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
         val listView = findViewById<ListView>(R.id.keyword_listview)
-        listView.adapter= blacklistAdapter(this,keyWordList)
+        listView.adapter= BlacklistAdapter(this,keyWordList)
 
         val mainMenuButton = findViewById<Button>(R.id.keyword_mainmenubtn) // navigation button to main menu
         mainMenuButton.setOnClickListener {
@@ -57,7 +57,7 @@ class KeywordManager : AppCompatActivity() {
                     lifecycleScope.launch {
                         addItem(newItem, type)
                         keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                        listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
+                        listView.adapter = BlacklistAdapter(this@KeywordManager, keyWordList)
                     }
                 } else {
                     Toast.makeText(this, "Item cannot be empty", Toast.LENGTH_SHORT).show()
@@ -85,7 +85,7 @@ class KeywordManager : AppCompatActivity() {
                 lifecycleScope.launch {
                     removeItem(numToRemove, type)
                     keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                    listView.adapter = blacklistAdapter(this@KeywordManager, keyWordList)
+                    listView.adapter = BlacklistAdapter(this@KeywordManager, keyWordList)
                 }
             }
 

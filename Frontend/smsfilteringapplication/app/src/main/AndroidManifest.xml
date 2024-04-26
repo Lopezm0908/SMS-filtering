@@ -78,7 +78,7 @@
         </activity>
 
         <activity
-            android:name=".screens.settings"
+            android:name=".screens.Settings"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

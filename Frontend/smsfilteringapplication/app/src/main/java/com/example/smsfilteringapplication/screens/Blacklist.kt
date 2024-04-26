@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.services.BlacklistAdapter
 import android.provider.BlockedNumberContract
 import android.database.Cursor
 import android.widget.AdapterView
@@ -29,7 +29,7 @@ public class Blacklist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.blacklist)
         val listView = findViewById<ListView>(R.id.blacklist_listview)
-        listView.adapter= blacklistAdapter(this,getBlockedNumbers(this)) //custom list adapter telling list what to render.
+        listView.adapter= BlacklistAdapter(this,getBlockedNumbers(this)) //custom list adapter telling list what to render.
 
         val mainMenuButton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
         mainMenuButton.setOnClickListener {
@@ -53,7 +53,7 @@ public class Blacklist : AppCompatActivity() {
                 if (newItem.isNotEmpty() && newItem.matches(Regex("^[0-9]+$"))) {
                     //if conditions are met the item is added to the back end blacklist and the list view is updated
                     addNumberToBlockedList(newItem)
-                    listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+                    listView.adapter= BlacklistAdapter(this,getBlockedNumbers(this))
                 } else {
                     Toast.makeText(this, "Item cannot be empty and must be numbers only ", Toast.LENGTH_SHORT).show()
                 }
@@ -63,7 +63,7 @@ public class Blacklist : AppCompatActivity() {
             }
             builder.show()
             //
-            listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+            listView.adapter= BlacklistAdapter(this,getBlockedNumbers(this))
         }
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
 
@@ -80,7 +80,7 @@ public class Blacklist : AppCompatActivity() {
                 // Perform actions after confirmation here
 
                 removeBlockedNumber(this,textContent)
-                listView.adapter= blacklistAdapter(this,getBlockedNumbers(this))
+                listView.adapter= BlacklistAdapter(this,getBlockedNumbers(this))
             }
 
             // Add a Cancel button and its logic

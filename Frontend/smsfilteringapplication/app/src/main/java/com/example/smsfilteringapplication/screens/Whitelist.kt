@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.dataclasses.QueryField
-import com.example.smsfilteringapplication.services.blacklistAdapter
+import com.example.smsfilteringapplication.services.BlacklistAdapter
 import com.example.smsfilteringapplication.dataclasses.addItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
 import com.example.smsfilteringapplication.dataclasses.removeItem
@@ -33,7 +33,7 @@ public class Whitelist : AppCompatActivity() {
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
-        listView.adapter= blacklistAdapter(this, arrayListOfNumbers)
+        listView.adapter= BlacklistAdapter(this, arrayListOfNumbers)
 
 //        Function to test if chaquopy is working
         lifecycleScope.launch {
@@ -41,12 +41,12 @@ public class Whitelist : AppCompatActivity() {
            // val newItem: String = pyFunc?.call(message).toString()
             //addItem(newItem, type)
             arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+            listView.adapter = BlacklistAdapter(this@Whitelist, arrayListOfNumbers)
         }
 
         lifecycleScope.launch {
             arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-            listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+            listView.adapter = BlacklistAdapter(this@Whitelist, arrayListOfNumbers)
         }
 
         val mainMenuButton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
@@ -74,7 +74,7 @@ public class Whitelist : AppCompatActivity() {
                     lifecycleScope.launch {
                         addItem(newItem,type)
                         arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                        listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                        listView.adapter = BlacklistAdapter(this@Whitelist, arrayListOfNumbers)
                     }
                 } else {
                     Toast.makeText(this, "Item cannot be empty, item must be numbers only", Toast.LENGTH_SHORT).show()
@@ -102,7 +102,7 @@ public class Whitelist : AppCompatActivity() {
                 lifecycleScope.launch {
                     removeItem(numToRemove, type)
                     arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-                    listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
+                    listView.adapter = BlacklistAdapter(this@Whitelist, arrayListOfNumbers)
                 }
             }
             // Add a Cancel button and its logic
