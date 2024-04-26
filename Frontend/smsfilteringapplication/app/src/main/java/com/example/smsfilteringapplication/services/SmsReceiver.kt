@@ -33,18 +33,13 @@ class SmsReceiver : BroadcastReceiver()
     }
     private val TAG = "SmsReceiver"
     private val type = "KeyWord"
-
-
-    var values = ContentValues()
-    var shouldwrite = String()
-    var keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
-    var whitelist = stringItemQueryToArrayList("Whitelist", QueryField.CONTENT)
-    var sendergl = String()
-    var bodygl = String()
-    val checkMsg = DetermineSpam()
-    val sms_id_list = arrayListOf<String>()
-    val py: Python = Python.getInstance()
-    val module: PyObject = py.getModule("BERT")
+    private var keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
+    private var whitelist = stringItemQueryToArrayList("Whitelist", QueryField.CONTENT)
+    private var sendergl = String()
+    private var bodygl = String()
+    private val checkMsg = DetermineSpam()
+    private val py: Python = Python.getInstance()
+    private val module: PyObject = py.getModule("BERT")
 
 //    var permissionLevel =
     override fun onReceive(context: Context, intent: Intent) {

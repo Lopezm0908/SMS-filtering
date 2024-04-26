@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.example.smsfilteringapplication.R
 
 
-class smsviewadapter(context: Context, fromarray: ArrayList<String>, bodyarray: ArrayList<String>): BaseAdapter() {
+class SmsViewAdapter(context: Context, fromarray: ArrayList<String>, bodyarray: ArrayList<String>): BaseAdapter() {
         private val mContext: Context
 
         val from_array = fromarray

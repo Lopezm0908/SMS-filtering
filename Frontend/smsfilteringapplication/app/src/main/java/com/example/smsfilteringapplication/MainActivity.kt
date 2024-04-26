@@ -1,16 +1,11 @@
 package com.example.smsfilteringapplication
 
 import android.app.Activity
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Telephony
-import android.util.Log
-import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,15 +13,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 //import com.chaquo.python.PyObject
 //import com.chaquo.python.Python
-import com.example.smsfilteringapplication.screens.Blacklist
-import com.example.smsfilteringapplication.screens.Evalmailbox
-import com.example.smsfilteringapplication.screens.KeywordManager
-import com.example.smsfilteringapplication.screens.Messagereporting
-import com.example.smsfilteringapplication.screens.Whitelist
 import com.example.smsfilteringapplication.services.SmsReceiver
-import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.example.smsfilteringapplication.services.mainmenuadapter
-import java.io.DataOutputStream
+import com.example.smsfilteringapplication.services.MainMenuAdapter
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.mainredesign)
         val listView = findViewById<ListView>(R.id.main_menu_view)
-        listView.adapter= mainmenuadapter(this) //custom list adapter telling list what to render.
+        listView.adapter= MainMenuAdapter(this) //custom list adapter telling list what to render.
 
 
         //define and register receiver
@@ -71,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     //more testing functions
 
-        fun checkAndRequestDefaultSmsApp(activity: Activity) {
+        private fun checkAndRequestDefaultSmsApp(activity: Activity) {
             if (Telephony.Sms.getDefaultSmsPackage(activity) != activity.packageName) {
                 // Not default SMS app
                 val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
@@ -82,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 checkAndRequestRuntimePermission(activity)
             }
         }
-        fun checkAndRequestRuntimePermission(activity: Activity) {
+        private fun checkAndRequestRuntimePermission(activity: Activity) {
             if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_SMS) !=
                 PackageManager.PERMISSION_GRANTED) {
 

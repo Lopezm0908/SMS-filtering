@@ -41,14 +41,14 @@
 
 
         <activity
-            android:name=".screens.Evalmailbox"
+            android:name=".screens.EvalMailBox"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".screens.Messagereporting"
+            android:name=".screens.MessageReporting"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

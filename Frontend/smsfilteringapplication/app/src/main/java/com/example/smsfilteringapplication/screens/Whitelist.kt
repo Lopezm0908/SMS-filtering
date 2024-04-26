@@ -11,8 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.chaquo.python.PyObject
-import com.chaquo.python.Python
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.dataclasses.QueryField
@@ -51,8 +49,8 @@ public class Whitelist : AppCompatActivity() {
             listView.adapter = blacklistAdapter(this@Whitelist, arrayListOfNumbers)
         }
 
-        val mainmenubutton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
-        mainmenubutton.setOnClickListener {
+        val mainMenuButton = findViewById<Button>(R.id.whitlist_mainmenubtn) // navigation button to main menu
+        mainMenuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

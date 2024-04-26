@@ -32,8 +32,8 @@ class KeywordManager : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.keyword_listview)
         listView.adapter= blacklistAdapter(this,keyWordList)
 
-        val mainmenubutton = findViewById<Button>(R.id.keyword_mainmenubtn) // navigation button to main menu
-        mainmenubutton.setOnClickListener {
+        val mainMenuButton = findViewById<Button>(R.id.keyword_mainmenubtn) // navigation button to main menu
+        mainMenuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

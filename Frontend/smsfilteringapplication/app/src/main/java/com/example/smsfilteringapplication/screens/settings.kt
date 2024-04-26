@@ -13,35 +13,35 @@ class settings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
-        val mainmenubutton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
-        mainmenubutton.setOnClickListener {
+        val mainMenuButton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
+        mainMenuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-        val useeval: CheckBox = findViewById(R.id.evalcheck)
-        val uselogic: CheckBox = findViewById(R.id.logic)
-        val usebert: CheckBox = findViewById(R.id.bertcheck)
-        val usekey: CheckBox = findViewById(R.id.keycheck)
+        val useEval: CheckBox = findViewById(R.id.evalcheck)
+        val useLogic: CheckBox = findViewById(R.id.logic)
+        val useBert: CheckBox = findViewById(R.id.bertcheck)
+        val useKey: CheckBox = findViewById(R.id.keycheck)
         // Add more checkboxes as needed...
 
         // Initialize checkboxes with their saved states
-        useeval.isChecked = GlobalValues.getCheckboxState(this, "evalcheck")
-        uselogic.isChecked = GlobalValues.getCheckboxState(this, "logic")
-        usebert.isChecked = GlobalValues.getCheckboxState(this, "bertcheck")
-        usekey.isChecked = GlobalValues.getCheckboxState(this, "keycheck")
+        useEval.isChecked = GlobalValues.getCheckboxState(this, "evalcheck")
+        useLogic.isChecked = GlobalValues.getCheckboxState(this, "logic")
+        useBert.isChecked = GlobalValues.getCheckboxState(this, "bertcheck")
+        useKey.isChecked = GlobalValues.getCheckboxState(this, "keycheck")
         // Retrieve states for more checkboxes and initialize them...
 
         // Set listeners for checkboxes to save their states
-        useeval.setOnCheckedChangeListener { _, isChecked ->
+        useEval.setOnCheckedChangeListener { _, isChecked ->
             GlobalValues.saveCheckboxState(this, "evalcheck", isChecked)
         }
-        uselogic.setOnCheckedChangeListener { _, isChecked ->
+        useLogic.setOnCheckedChangeListener { _, isChecked ->
             GlobalValues.saveCheckboxState(this, "logic", isChecked)
         }
-        usebert.setOnCheckedChangeListener { _, isChecked ->
+        useBert.setOnCheckedChangeListener { _, isChecked ->
             GlobalValues.saveCheckboxState(this, "bertcheck", isChecked)
         }
-        usekey.setOnCheckedChangeListener { _, isChecked ->
+        useKey.setOnCheckedChangeListener { _, isChecked ->
             GlobalValues.saveCheckboxState(this, "keycheck", isChecked)
         }
     }

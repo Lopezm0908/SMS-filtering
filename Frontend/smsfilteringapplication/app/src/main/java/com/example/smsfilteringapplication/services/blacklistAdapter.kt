@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.screens.Blacklist
 
 class blacklistAdapter(context: Context,numberarray: ArrayList<String>): BaseAdapter() {
     private val mContext: Context
-    val numberarraylocal = numberarray
+    private val numberArrayLocal = numberarray
 
     init{
         mContext = context
@@ -21,7 +20,7 @@ class blacklistAdapter(context: Context,numberarray: ArrayList<String>): BaseAda
     }
     // responsible for how many rows
     override fun getCount(): Int {
-        return numberarraylocal.size
+        return numberArrayLocal.size
     }
     override fun getItem(position: Int): Any {
         return "Test String"
@@ -34,7 +33,7 @@ class blacklistAdapter(context: Context,numberarray: ArrayList<String>): BaseAda
 
         val numbersTextView = blacklistRow.findViewById<TextView>(R.id.item_phone_number)
 
-        numbersTextView.text = numberarraylocal.get(position)
+        numbersTextView.text = numberArrayLocal.get(position)
         return blacklistRow
     }
 

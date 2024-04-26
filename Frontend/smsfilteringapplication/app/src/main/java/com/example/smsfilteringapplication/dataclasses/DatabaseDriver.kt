@@ -1,13 +1,7 @@
 package com.example.smsfilteringapplication.dataclasses
-import android.app.DownloadManager.Query
-import android.util.Log
 import com.example.smsfilteringapplication.MyApp
-import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
-import io.realm.kotlin.exceptions.RealmException
 import io.realm.kotlin.ext.query
-import java.lang.reflect.Field
-import kotlin.reflect.KProperty
 
 
 // In Kotlin, you can have top-level functions (functions that exist outside of classes).
@@ -42,10 +36,10 @@ fun stringItemQueryToArrayList(type : String, data : QueryField) : ArrayList<Str
 suspend fun removeItem (newNumber : String, type : String){
     realm.write{
         val numToDelete : StringItem = realm.query<StringItem>("content = $0", newNumber).query("type = $0", type).find().first()
-        val latestnum = findLatest(numToDelete)
+        val latestNum = findLatest(numToDelete)
 
-        if (latestnum != null) {
-            delete(latestnum)
+        if (latestNum != null) {
+            delete(latestNum)
         }
     }
 }

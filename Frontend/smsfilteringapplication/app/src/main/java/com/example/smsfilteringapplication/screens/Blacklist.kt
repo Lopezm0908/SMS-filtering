@@ -1,6 +1,5 @@
 package com.example.smsfilteringapplication.screens
 
-import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
@@ -8,23 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
 import com.example.smsfilteringapplication.services.blacklistAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.provider.BlockedNumberContract
 import android.database.Cursor
 import android.widget.AdapterView
@@ -39,8 +31,8 @@ public class Blacklist : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.blacklist_listview)
         listView.adapter= blacklistAdapter(this,getBlockedNumbers(this)) //custom list adapter telling list what to render.
 
-        val mainmenubutton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
-        mainmenubutton.setOnClickListener {
+        val mainMenuButton = findViewById<Button>(R.id.mainmenubtn) // navigation button to main menu
+        mainMenuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -108,7 +100,7 @@ public class Blacklist : AppCompatActivity() {
         }
 
     }
-    fun addNumberToBlockedList(number: String) {
+    private fun addNumberToBlockedList(number: String) {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             val values = ContentValues()
             values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
@@ -118,7 +110,7 @@ public class Blacklist : AppCompatActivity() {
         }
     }
 
-    fun removeBlockedNumber(context: Context, phoneNumber: String): Boolean {
+    private fun removeBlockedNumber(context: Context, phoneNumber: String): Boolean {
         val contentResolver: ContentResolver = context.contentResolver
 
         // Build the selection clause to find the blocked number
@@ -135,7 +127,7 @@ public class Blacklist : AppCompatActivity() {
         // If rowsDeleted is more than 0, the operation was successful
         return rowsDeleted > 0
     }
-    fun getBlockedNumbers(context: Context): ArrayList<String> {
+    private fun getBlockedNumbers(context: Context): ArrayList<String> {
         val blockedNumbersList = ArrayList<String>()
 
         // Requires permission: Manifest.permission.READ_BLOCKED_NUMBERS

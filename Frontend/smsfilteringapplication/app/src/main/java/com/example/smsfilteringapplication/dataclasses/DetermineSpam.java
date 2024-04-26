@@ -25,13 +25,8 @@ public class DetermineSpam {
 		int result = Process(SpamScore, weight);
 		
 		//spam
-		if(result == 1) {
-			return true;
-		}
-		//not spam
-		else {
-			return false;
-		}
+        //not spam
+        return result == 1;
 	}
 	
 	//does the calculations
@@ -72,14 +67,14 @@ public class DetermineSpam {
 			//https://www.cybercrimeinfocenter.org/top-20-tlds-by-malicious-phishing-domains
 			
 			if(
-				Pattern.compile(Pattern.quote(".com"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
-				Pattern.compile(Pattern.quote(".net"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
-				Pattern.compile(Pattern.quote(".org"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true
+				Pattern.compile(Pattern.quote(".com"), Pattern.CASE_INSENSITIVE).matcher(each).find() ||
+                        Pattern.compile(Pattern.quote(".net"), Pattern.CASE_INSENSITIVE).matcher(each).find() ||
+                        Pattern.compile(Pattern.quote(".org"), Pattern.CASE_INSENSITIVE).matcher(each).find()
 					) {
 				SpamScore = SpamScore + 1.5;
 			}
 			else if(
-				Pattern.compile(Pattern.quote(".xyz"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
+				Pattern.compile(Pattern.quote(".xyz"), Pattern.CASE_INSENSITIVE).matcher(each).find() ||
 				Pattern.compile(Pattern.quote(".cn"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
 				Pattern.compile(Pattern.quote(".online"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true  ||
 				Pattern.compile(Pattern.quote(".us"), Pattern.CASE_INSENSITIVE).matcher(each).find() == true

@@ -15,17 +15,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.smsfilteringapplication.MainActivity
 import com.example.smsfilteringapplication.R
-import com.example.smsfilteringapplication.services.smsviewadapter
-import android.content.Context
+import com.example.smsfilteringapplication.services.SmsViewAdapter
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.example.smsfilteringapplication.dataclasses.QueryField
 import com.example.smsfilteringapplication.dataclasses.removeItem
 import com.example.smsfilteringapplication.dataclasses.stringItemQueryToArrayList
-import com.example.smsfilteringapplication.services.blacklistAdapter
 import kotlinx.coroutines.launch
 
-class Evalmailbox : AppCompatActivity() {
+class EvalMailBox : AppCompatActivity() {
     private val type = "Eval"
     var sms_id_list = arrayListOf<String>()
     private var fromlist = arrayListOf<String>()
@@ -40,7 +38,7 @@ class Evalmailbox : AppCompatActivity() {
         fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
         sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
 
-        listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
+        listView.adapter= SmsViewAdapter(this,fromlist,smsbodyList)
 
         val mainmenubutton = findViewById<Button>(R.id.eval_mainmenubtn) // navigation button to main menu
         mainmenubutton.setOnClickListener {
@@ -56,7 +54,7 @@ class Evalmailbox : AppCompatActivity() {
             smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
             fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
             sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
-            listView.adapter= smsviewadapter(this,fromlist,smsbodyList)
+            listView.adapter= SmsViewAdapter(this,fromlist,smsbodyList)
         }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -92,7 +90,7 @@ class Evalmailbox : AppCompatActivity() {
                     smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
                     fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
                     sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
-                    listView.adapter= smsviewadapter(this@Evalmailbox,fromlist,smsbodyList)
+                    listView.adapter= SmsViewAdapter(this@EvalMailBox,fromlist,smsbodyList)
                 }
 
 
@@ -111,7 +109,7 @@ class Evalmailbox : AppCompatActivity() {
                     smsbodyList = stringItemQueryToArrayList(type, QueryField.CONTENT)
                     fromlist = stringItemQueryToArrayList(type, QueryField.SENDER)
                     sms_id_list = stringItemQueryToArrayList(type, QueryField.ID)
-                    listView.adapter= smsviewadapter(this@Evalmailbox,fromlist,smsbodyList)
+                    listView.adapter= SmsViewAdapter(this@EvalMailBox,fromlist,smsbodyList)
                 }
 
                 //requery sms
