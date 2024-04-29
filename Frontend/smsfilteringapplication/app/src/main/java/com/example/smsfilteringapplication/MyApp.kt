@@ -4,7 +4,6 @@ package com.example.smsfilteringapplication
 import android.app.Application
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
-import com.example.smsfilteringapplication.dataclasses.BlackListNumbers
 import com.example.smsfilteringapplication.dataclasses.StringItem
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -23,7 +22,6 @@ class MyApp: Application() {
         //Realm setup
         val config = RealmConfiguration.Builder(
             schema = setOf(
-                BlackListNumbers::class,
                 StringItem::class
             )
         ).deleteRealmIfMigrationNeeded().build()
