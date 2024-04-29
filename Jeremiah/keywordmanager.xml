@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.KeywordManager">
+
+    <ListView
+        android:id="@+id/keyword_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/kwlabel"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/black"
+        android:background="@color/black"></ListView>
+
+    <TextView
+        android:id="@+id/kwlabel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/darkPastelOrange"
+        android:text=""
+
+        ></TextView>
+
+    <TextView
+        android:id="@+id/kw_textView"
+        android:layout_width="131dp"
+        android:layout_height="38dp"
+        android:layout_above="@+id/keyword_listview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="143dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="138dp"
+        android:layout_marginBottom="12dp"
+        android:text="Keywords"
+        android:textColor="@color/white"
+        android:textSize="30dp" />
+    <Button
+        android:id="@+id/keyword_mainmenubtn"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/keyword_listview"
+        android:radius = "0dp"
+        android:backgroundTint="@color/darkPastelOrange"
+        android:text="Main Menu"/>
+
+    <Button
+        android:id="@+id/keyword_additembtn"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@id/keyword_listview"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="-152dp"
+        android:layout_toEndOf="@+id/keyword_mainmenubtn"
+        android:backgroundTint="@color/darkPastelOrange"
+        android:text="Add keyword"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="390dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="70dp"
+        android:layout_x="9dp"
+        android:layout_y="359dp"
+
+        android:background="@drawable/rounded_corner"
+        android:padding="5dp"
+        android:textColor="#779ECB" />
+
+    <TextView
+        android:layout_width="390dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="70dp"
+
+        android:layout_x="16dp"
+        android:layout_y="81dp"
+
+        android:background="@drawable/rounded_corner"
+        android:padding="5dp"
+        android:textColor="#779ECB" />
+
+    <Button
+        android:id="@+id/BLbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="241dp"
+        android:layout_marginEnd="141dp"
+        android:layout_x="279dp"
+        android:layout_y="365dp"
+        android:autoText="false"
+
+        android:background="@drawable/rounded_corner"
+        android:shadowColor="#A33B3B"
+        android:text="Black List"
+
+        android:textAllCaps="true"
+        android:textColor="#070606"
+        android:textColorHighlight="#FEFEFE"
+        android:textColorLink="#FEFEFE"
+        app:backgroundTint="#ffffff"
+        app:iconTint="#FEFEFE" />
+
+    <Button
+        android:id="@+id/WLbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BLbutton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="141dp"
+        android:layout_x="232dp"
+        android:layout_y="416dp"
+        android:background="@drawable/rounded_corner"
+        android:text="White List"
+
+        android:textAllCaps="true"
+        android:textColor="#070606"
+        android:textColorHighlight="#FEFEFE"
+        android:textColorLink="#FEFEFE"
+        app:backgroundTint="#ffffff"
+        app:iconTint="#FEFEFE" />
+
+    <Button
+        android:id="@+id/MSbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/WLbutton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="141dp"
+        android:layout_x="141dp"
+        android:layout_y="385dp"
+        android:background="@drawable/rounded_corner"
+        android:text="Messages"
+        android:textAllCaps="true"
+        android:textColor="#070606"
+        android:textColorHighlight="#FEFEFE"
+        android:textColorLink="#FEFEFE"
+        app:backgroundTint="#ffffff"
+        app:iconTint="#FEFEFE" />
+
+    <Button
+        android:id="@+id/KWbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/MSbutton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="141dp"
+        android:layout_x="29dp"
+        android:layout_y="412dp"
+        android:background="@drawable/rounded_corner"
+        android:text="Keyword"
+        android:textAllCaps="true"
+        android:textColor="#070606"
+        android:textColorHighlight="#FEFEFE"
+        android:textColorLink="#FEFEFE"
+        app:backgroundTint="#ffffff"
+        app:iconTint="#FEFEFE" />
+
+    <Button
+        android:id="@+id/eval_mailbox_button"
+        android:layout_width="212dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/BLbutton"
+        android:layout_alignBottom="@+id/KWbutton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-78dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="235dp"
+        android:layout_x="155dp"
+        android:layout_y="141dp"
+        android:background="@drawable/button_background"
+        android:foregroundTint="#FFFFFF"
+        android:text="Evaluation Mailbox"
+        android:textColor="#070606"
+        android:textColorHighlight="#FEFEFE"
+        android:textColorLink="#FEFEFE"
+        app:backgroundTint="#ffffff"
+        app:iconTint="#FEFEFE" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="115dp"
+        android:layout_height="76dp"
+        android:layout_x="37dp"
+        android:layout_y="96dp"
+        app:srcCompat="@android:drawable/sym_action_chat" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_x="171dp"
+        android:layout_y="99dp"
+        android:text="Review Messages"
+        android:textColor="#FEFEFE"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
+
+
+</AbsoluteLayout>
