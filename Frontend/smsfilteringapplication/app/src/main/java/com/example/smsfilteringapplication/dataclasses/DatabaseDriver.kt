@@ -63,3 +63,6 @@ suspend fun addItem (newNumber : String, type : String, id : String = "", sender
 
 class DatabaseDriver {
 }
+
+
+//Cameron: I also wrote the boilerplate we're using in the activities for opening up coroutines and calling these functions.
