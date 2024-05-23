@@ -31,7 +31,7 @@
 	5. Select _smsfilteringapplication_ from the list of apps given 
 ## Usage 
 
-Available Features:
+**Available Features:**
 1. **Whitelist a Number** - Exempt a number from analysis 
 2. **Blacklist a Number** - Block all incoming texts and calls from a specific number 
 3. **Keyword Blocking** - Block messages containing specific keywords 
