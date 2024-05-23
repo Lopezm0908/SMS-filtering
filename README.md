@@ -1,45 +1,85 @@
-# SMS-filtering
-Hey eveyone! This repository and project board are what we're going to be using for version control (just keeping all of our files synced with each other) and progress tracking. I'll write a quick guide here for setting up your local machine to use this repository.
+# Inbox Guardian
 
-## Install Git
-Go to the git for windows website and install wherever you please.
+## Description 
+	Inbox Guardian is an SMS spam filter meant to be deployed in addition to any existing SMS application allowing users 
+	the ability to enjoy all the features of their favorite SMS application along with the added protection against spam 
+	and fishing messages. Inbox Guardian employs the use of a logistic regression model, the BERT language model, and 
+	other holistic methods such as keyword recognition to flag spam messages.
+	
+## Why?
+	Spam is a pervasive threat to our productivity and safety when using mobile devices, we at Inbox Guardian find the 
+	current integrated spam filters in most messaging applications to be inaddequate to block the constant barrage of 
+	ever evolving spam messages. This is why we designed the Inbox Guardian, a robust and comprehensive protective measure 
+	using the latest artificial intelligence to block spam with a tested 90% accuracy rate.
 
-## Easy Setup
-For an easier time setting up a local repository, you can use Github Desktop, Githubs GUI for repository management. I wouldn't really recommend this though since it's rather clunky and slow, but to each their own. Once you donwload it it's pretty simple to work with it, so I won't go into detail about it.
+## Quick Start
 
-## Command-Line Setup
-Once you have Git installed, navigate to the folder you want to contain the project files in your command prompt. For windows, here's an example of how to do so:
+### setup the inbox Guardian API 
+	1. Clone repository [Link](https://github.com/CameronJ2/InboxGuardian-API)
+	2. Install requirements listed in the requirements text folder contained in the main directory using the command 
+		pip install -r requirements.txt
+	3. Run the server.py file using the command 
+		python server.py
+### Run the project in Android Studio
+	1. Open the application under smsfilteringapplication 
+	2. Run the mainactivity.kt file
+### ensure app is default sms app 
+	1. Open settings 
+	2. Navigate to apps
+	3. Navigate to Default Apps 
+	4. Navigate to SMS app 
+	5. Select _smsfilteringapplication_ from the list of apps given 
+## Usage 
 
-H:\>C:
+Available Features:
+1. Whitelist a number 
+	Exempt a number from analysis 
+2. Blacklist a number 
+	Block all incoming texts and calls from a specific number 
+3. Keyword Blocking 
+	Block messages containing specific keywords 
+4. Message reporting 
+	Report a message as spam, this blacklists the number and deletes the message.
+5. Evaluation mailbox 
+	If a message is blocked by keyword analysis, BERT analysis, or logistic regression analysis the message is sent here. 
+	The user can then decide whether to flag the message as spam and block the number or send the message through to the inbox.
+5. BERT analysis 
+	Using the BERT language model we can accurately detect whether or not a message is spam or not spam. 
+6. Logistic Regression Analysis
+	Using a machine learning model trained on a large dataset of spam messages we are able to accurately detect whether or not a message is spam or not spam.
+7. Settings menu
+	Opt in and out of different filters and features to make the application better suit an individual users needs
+## Examples 
 
-C:\>cd C:\Projects\Senior Project
-
-C:\Projects\Senior Project>
-
-Type the drive letter followed by a colon to swap which drive the command prompt is on.
-Then just type "cd (filepath)" to navigate to the folder you want.
-
-### Initialization
-Once at the desired folder in the cmd, type "git init" to set up a basic repository. You'll notice a hidden .git folder in your file browser if you have it set to see hidden items.
-
-### Link Local to Cloud Repository
-type "git remote add origin https://github.com/Lopezm0908/SMS-filtering" to link your local repository to the github one.
-You can type "git remote" to confirm that it worked. It should return origin.
-
-### Change Branch
-type "git checkout main" to swap to the main branch. This should also automatically set up your local branch (main) to track the origin's main branch. This was the last step for setup, now we move to version control.
-
-
-
-## Version Control
-Now that everything is setup, I'll walk through how to use github for version control.
-
-When you're ready to start working on the project, navigate to the project location in command line and type "git status". This will let you know if anyone else has done anything since you last worked on it. If it says you're up to date, you're good to start working. If you're not up to date, you'll need to type "git pull" to pull the changes from the cloud to your local machine, then you're good to start working.
-
-Once you're finished working, type "git status" again. This will let you know what files you've changed (they'll be red). Type "git add ." to add all files you've altered to the next commit. Type "git status" again to ensure that the files are green now, meaning they're ready for a commit. Then, type "git commit -m '(describe here a very brief summary of what you did)' ". Once you've commited your changes, type "git push" to push your commits to the cloud.
-
-That summarizes the overall workflow of github. Let me know if you have any questions (or you can use chatGPT for questions, it's very well documented on how to use Git and Github.
-
-
-#### Final tip
-Commits can be seen as checkpoints of sorts. If, while you're working on the project, you decide you want to try something a bit different and need to modify a good amount of your files to try it and aren't comfortable with that, make a quick commit and type as the message why you're committing and what you're fixing to try. You can bounce between commits as you please, though it's a bit more complex than what I talked about in this guide. This checkpoint hopping is the entire point of version control and allows you the comfort of knowing you won't screw something up somewhere and mess the whole project up since you hace commits to fall back on.
+### Adding a number to the whitelist
+	1. Use the gui to navigate to the whitelist menu
+	2. Press the add number button
+	3. Enter the number of your choice
+	4. Hit the confirm button
+	5. Your number is now in the whitelist 
+### Adding a number to the blacklist
+	1. Use the gui to navigate to the blacklist menu
+	2. Press the add number button
+	3. Enter the number of your choice
+	4. Hit the confirm button
+	5. Your number is now in the blacklist
+### Adding a keyword to filter out
+	1. Use the gui to navigate to the keyword menu
+	2. Press the add keyword button
+	3. Enter the keyword of your choice
+	4. Hit the confirm button
+	5. Your keyword is now a flag for spam messages
+### Reporting a message as spam 
+	1. Use the gui to navigate to the message reporting screen
+	2. Select the message you would like to report by pressing on the message itself 
+	3. In the pop up menu just press confirm 
+	4. The message is now deleted and the number is blocked.
+### Evaluating a message 
+	1. Use the gui to navigate to the evaluation mailbox screen
+	2. Select the message you would like to evaluate by pressing on the message itself
+	3. In the pop up menu select either flag or approve 
+	4. If you approve the message it will be sent to the inbox
+	5. If you flag the message the message is deleted and the number that sent it is added to the blacklist
+### Edit Settings 
+	1. Use the gui to navigate to the settings menu 
+	2. Use the checkboxes to opt in and out of specific features or filters 
