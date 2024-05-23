@@ -28,7 +28,7 @@
 	2. Navigate to apps
 	3. Navigate to Default Apps 
 	4. Navigate to SMS app 
-	5. Select _smsfilteringapplication_ from the list of apps given 
+	5. Select smsfilteringapplication from the list of apps given 
 ## Usage 
 
 **Available Features:**
