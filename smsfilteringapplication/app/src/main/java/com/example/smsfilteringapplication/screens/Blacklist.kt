@@ -21,7 +21,7 @@ import android.provider.BlockedNumberContract
 import android.database.Cursor
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
-
+// class manages the blacklist screen
 
 
 public class Blacklist : AppCompatActivity() {
@@ -62,7 +62,7 @@ public class Blacklist : AppCompatActivity() {
                 dialog.cancel()
             }
             builder.show()
-            //
+
             listView.adapter= BlacklistAdapter(this,getBlockedNumbers(this))
         }
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -106,7 +106,7 @@ public class Blacklist : AppCompatActivity() {
             values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
             contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
         } else {
-            // Handle the lack of permission here.
+            // Do nothing there are no permissions
         }
     }
 

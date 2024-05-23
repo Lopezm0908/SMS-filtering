@@ -1,3 +1,4 @@
+//Defines database objects
 package com.example.smsfilteringapplication.dataclasses
 
 import io.realm.kotlin.types.RealmObject

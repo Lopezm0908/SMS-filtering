@@ -41,13 +41,14 @@ class SmsReceiver : BroadcastReceiver()
     private val py: Python = Python.getInstance()
     private val module: PyObject = py.getModule("BERT")
 
-//    var permissionLevel =
+
     override fun onReceive(context: Context, intent: Intent) {
+        // buffers lists for evaluation
         keyWordList = stringItemQueryToArrayList(type, QueryField.CONTENT)
         whitelist = stringItemQueryToArrayList("Whitelist", QueryField.CONTENT)
 
         Log.d(TAG, "onReceive triggered")
-        if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+        if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) { //packages received message
             val bundle = intent.extras
             if (bundle != null) {
                 Log.d(TAG, "SMS bundle is not null")
@@ -63,12 +64,14 @@ class SmsReceiver : BroadcastReceiver()
                     smsMessage.originatingAddress.toString()
                 } ?: ""
                 bodygl = fullMessage
+                //stops duplicates from occurring
                 val currentTime = System.currentTimeMillis()
                 if (currentTime - lastProcessedTime < 500) { // 1 second threshold
                     Log.d(TAG, "Ignoring duplicate SMS received within a short interval.")
                     return
                 }
                 lastProcessedTime = currentTime
+                //runs through spam filters, if statements check different filters based on what is selected.
                 run {
                     Log.d(TAG, "Checking spam filters")
                     val pyFunc: PyObject? = module["BertApiRequest"]

@@ -27,19 +27,14 @@ public class Whitelist : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whitelist)
         arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
-        //val py: Python = Python.getInstance()
-        //val module: PyObject = py.getModule("BERT")
-        //val pyFunc: PyObject? = module["BertApiRequest"]
+
 
 
         val listView = findViewById<ListView>(R.id.whitelist_listview)
         listView.adapter= BlacklistAdapter(this, arrayListOfNumbers)
 
-//        Function to test if chaquopy is working
+
         lifecycleScope.launch {
-            //val message: String = "REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls reply 2 this text with your valid name, house no and postcode"
-           // val newItem: String = pyFunc?.call(message).toString()
-            //addItem(newItem, type)
             arrayListOfNumbers = stringItemQueryToArrayList(type, QueryField.CONTENT)
             listView.adapter = BlacklistAdapter(this@Whitelist, arrayListOfNumbers)
         }
@@ -86,9 +81,6 @@ public class Whitelist : AppCompatActivity() {
             builder.show()
         }
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-
-            // Reading the text content of the clicked TextView
-            //val textContent = findViewById<TextView>(R.id.item_phone_number).text.toString()
 
             // Set the message and title for the dialog
             val builder = AlertDialog.Builder(this)

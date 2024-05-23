@@ -1,3 +1,5 @@
+//Global values class used to save state of checkboxes in settings
+
 package com.example.smsfilteringapplication.dataclasses
 
 import android.content.Context

@@ -1,3 +1,4 @@
+// This class manages the Evaluation Mailbox
 package com.example.smsfilteringapplication.screens
 
 import android.content.ContentValues

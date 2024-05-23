@@ -60,8 +60,8 @@ class MessageReporting : AppCompatActivity() {
 
             // Add a Confirm button and its logic
             builder.setPositiveButton("Confirm") { dialog, which ->
-                // Perform actions after confirmation here
-                //insert logic to add the item to the sms flagged database
+
+                //add the item to the sms flagged database
                 // the app will then delete the sms from the phone as it has been flagged as spam
                 addNumberToBlockedList(fromList.get(position))
                 lifecycleScope.launch {
@@ -139,7 +139,7 @@ class MessageReporting : AppCompatActivity() {
             values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
             contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
         } else {
-            // Handle the lack of permission here.
+            // do nothing
         }
     }
 }

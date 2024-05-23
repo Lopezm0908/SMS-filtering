@@ -1,3 +1,4 @@
+// Logistic Regression model
 package com.example.smsfilteringapplication.dataclasses;
 
 import java.io.IOException;

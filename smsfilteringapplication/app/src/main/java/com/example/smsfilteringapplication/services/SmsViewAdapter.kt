@@ -1,5 +1,5 @@
 package com.example.smsfilteringapplication.services
-
+// decides formatting and content displayed for sms messages contained in the eval mailbox and message reporting screens
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
