@@ -14,7 +14,7 @@
 
 ## Quick Start
 
-### setup the inbox Guardian API 
+### Setup the inbox Guardian API 
 	1. Clone repository [Link](https://github.com/CameronJ2/InboxGuardian-API)
 	2. Install requirements listed in the requirements text folder contained in the main directory using the command 
 		pip install -r requirements.txt
@@ -23,7 +23,7 @@
 ### Run the project in Android Studio
 	1. Open the application under smsfilteringapplication 
 	2. Run the mainactivity.kt file
-### ensure app is default sms app 
+### Ensure app is default SMS app 
 	1. Open settings 
 	2. Navigate to apps
 	3. Navigate to Default Apps 
@@ -32,23 +32,14 @@
 ## Usage 
 
 Available Features:
-1. Whitelist a number 
-	Exempt a number from analysis 
-2. Blacklist a number 
-	Block all incoming texts and calls from a specific number 
-3. Keyword Blocking 
-	Block messages containing specific keywords 
-4. Message reporting 
-	Report a message as spam, this blacklists the number and deletes the message.
-5. Evaluation mailbox 
-	If a message is blocked by keyword analysis, BERT analysis, or logistic regression analysis the message is sent here. 
-	The user can then decide whether to flag the message as spam and block the number or send the message through to the inbox.
-5. BERT analysis 
-	Using the BERT language model we can accurately detect whether or not a message is spam or not spam. 
-6. Logistic Regression Analysis
-	Using a machine learning model trained on a large dataset of spam messages we are able to accurately detect whether or not a message is spam or not spam.
-7. Settings menu
-	Opt in and out of different filters and features to make the application better suit an individual users needs
+1. **Whitelist a Number** - Exempt a number from analysis 
+2. **Blacklist a Number** - Block all incoming texts and calls from a specific number 
+3. **Keyword Blocking** - Block messages containing specific keywords 
+4. **Message Reporting** - Report a message as spam, this blacklists the number and deletes the message.
+5. **Evaluation Mailbox** - If a message is blocked by keyword analysis, BERT analysis, or logistic regression analysis, the message is sent here. The user can then decide whether to flag the message as spam and block the number or send the message through to the inbox.
+5. **BERT Analysis** - Using the BERT language model we can accurately detect whether or not a message is spam or not spam. 
+6. **Logistic Regression Analysis** - Using a machine learning model trained on a large dataset of spam messages we are able to accurately detect 	whether or not a message is spam or not spam.
+7. **Settings Menu** - Opt in and out of different filters and features to make the application better suit an individual users needs
 ## Examples 
 
 ### Adding a number to the whitelist
@@ -83,3 +74,8 @@ Available Features:
 ### Edit Settings 
 	1. Use the gui to navigate to the settings menu 
 	2. Use the checkboxes to opt in and out of specific features or filters 
+## Demo
+
+https://github.com/Lopezm0908/SMS-filtering/assets/158241209/9370c61f-fa78-4955-aba4-418992dd5b7c
+
+
