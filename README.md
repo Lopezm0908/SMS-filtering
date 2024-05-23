@@ -8,7 +8,7 @@
 	
 ## Why?
 	Spam is a pervasive threat to our productivity and safety when using mobile devices, we at Inbox Guardian find the 
-	current integrated spam filters in most messaging applications to be inaddequate to block the constant barrage of 
+	current integrated spam filters in most messaging applications to be inadequate to block the constant barrage of 
 	ever evolving spam messages. This is why we designed the Inbox Guardian, a robust and comprehensive protective measure 
 	using the latest artificial intelligence to block spam with a tested 90% accuracy rate.
 
