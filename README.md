@@ -1,5 +1,11 @@
 # Inbox Guardian
 
+<div align="center">
+          <img src = "https://github.com/Lopezm0908/SMS-filtering/assets/158241209/37b663ed-8a21-495c-a308-d81725945f6b"
+	width = "300"
+	height = "300" />
+</div>
+
 ## Description 
 	Inbox Guardian is an SMS spam filter meant to be deployed in addition to any existing SMS application allowing users 
 	the ability to enjoy all the features of their favorite SMS application along with the added protection against spam 
